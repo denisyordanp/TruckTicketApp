@@ -70,6 +70,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.androidx.hilt.navigation)
+    implementation(libs.androidx.accompanist.systemui)
+    implementation(libs.androidx.accompanist.swiperefresh)
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.compiler)

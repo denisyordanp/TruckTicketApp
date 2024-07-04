@@ -5,6 +5,7 @@ import com.denisyordanp.truckticketapp.implementModule
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.android.hilt)
     id("kotlin-kapt")
 }
@@ -34,6 +35,10 @@ dependencies {
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.compiler)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
 }

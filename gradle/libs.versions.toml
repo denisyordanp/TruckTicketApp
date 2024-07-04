@@ -7,10 +7,14 @@ junitVersion = "1.2.0"
 espressoCore = "3.6.0"
 lifecycleRuntimeKtx = "2.8.3"
 activityCompose = "1.9.0"
+navigationCompose = "2.7.7"
+hiltNavigationCompose = "1.2.0"
 composeBom = "2023.08.00"
+accompanist = "0.23.1"
 coroutine = "1.8.0"
 hilt = "2.49"
-ksp = "1.8.10-1.0.13"
+room = "2.5.2"
+ksp = "1.8.10-1.0.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +34,16 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose"}
+androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose"}
+
+androidx-accompanist-systemui = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist"}
+androidx-accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "accompanist"}
+
+androidx-room-runtime = { group = "androidx.room", name ="room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name ="room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name ="room-compiler", version.ref = "room" }
 
 dagger-hilt = { group = "com.google.dagger", name ="hilt-android", version.ref = "hilt" }
 dagger-compiler = { group = "com.google.dagger", name ="hilt-compiler", version.ref = "hilt" }

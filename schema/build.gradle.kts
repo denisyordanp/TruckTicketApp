@@ -1,4 +1,6 @@
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
+import com.denisyordanp.truckticketapp.TruckTicketModule
+import com.denisyordanp.truckticketapp.implementModule
 
 plugins {
     alias(libs.plugins.android.library)
@@ -23,6 +25,11 @@ android {
 }
 
 dependencies {
+    implementModule(TruckTicketModule.COMMON)
+
     implementation(libs.androidx.core.ktx)
+
+    implementation(libs.androidx.room.runtime)
+
     testImplementation(libs.junit)
 }

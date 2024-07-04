@@ -1,8 +1,12 @@
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
+import com.denisyordanp.truckticketapp.TruckTicketModule
+import com.denisyordanp.truckticketapp.implementModule
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.android.hilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -23,9 +27,11 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlin.coroutine)
+
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.compiler)
 
     testImplementation(libs.junit)
 }

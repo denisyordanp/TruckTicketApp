@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.android.hilt)
+    alias(libs.plugins.kotlin.ksp)
     id("kotlin-kapt")
 }
 
@@ -33,6 +34,9 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlin.coroutine)
+
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.compiler)
