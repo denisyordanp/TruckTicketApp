@@ -34,3 +34,5 @@ fun Long.toFormattedDateString(format: DateFormat, locale: Locale = Locale.getDe
         dateFormat.format(date.time)
     }
 }
+
+fun Long.isZero() = this == 0L

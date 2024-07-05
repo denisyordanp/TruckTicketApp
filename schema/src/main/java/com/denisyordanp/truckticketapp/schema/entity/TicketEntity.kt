@@ -8,6 +8,7 @@ import com.denisyordanp.truckticketapp.schema.ui.Ticket
 
 @Entity(tableName = TicketEntity.TABLE_NAME)
 data class TicketEntity(
+    // TODO: Change primary key to auto generate because multiple licence should be allowed
     @PrimaryKey
     @ColumnInfo(LICENCE_COLUMN)
     val licence: String,

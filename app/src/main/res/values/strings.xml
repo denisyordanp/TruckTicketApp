@@ -16,4 +16,8 @@
     <string name="outbound_weight">Outbound weight</string>
     <string name="ton">Ton</string>
     <string name="error_please_try_again_later">Error! Please try again later.</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="nett_weight">Nett weight</string>
+    <string name="detail_ticket">Detail Ticket</string>
 </resources>

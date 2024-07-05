@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,11 +31,14 @@ import androidx.navigation.compose.composable
 import com.denisyordanp.truckticketapp.R
 import com.denisyordanp.truckticketapp.common.extension.dateFormatToHour
 import com.denisyordanp.truckticketapp.common.extension.dateFormatToMinute
+import com.denisyordanp.truckticketapp.common.extension.isZero
+import com.denisyordanp.truckticketapp.common.extension.onlyAlphanumeric
 import com.denisyordanp.truckticketapp.common.extension.orZero
 import com.denisyordanp.truckticketapp.common.extension.safeToLong
 import com.denisyordanp.truckticketapp.common.extension.toFormattedDateString
 import com.denisyordanp.truckticketapp.common.util.DateFormat
 import com.denisyordanp.truckticketapp.schema.ui.Ticket
+import com.denisyordanp.truckticketapp.ui.component.DateButton
 import com.denisyordanp.truckticketapp.ui.component.DatePickerDialog
 import com.denisyordanp.truckticketapp.ui.component.StickyBottom
 import com.denisyordanp.truckticketapp.ui.component.TimePickerDialog
@@ -98,15 +101,23 @@ private fun ManageScreen(
     val shouldShowTimePicker = remember { mutableStateOf(false) }
 
     val currentDateTime = Calendar.getInstance()
-    var selectedDate by remember(ticket.value?.dateTime) { mutableLongStateOf(ticket.value?.dateTime ?: currentDateTime.timeInMillis) }
-    var selectedTime by remember(ticket.value?.dateTime) { mutableStateOf(
-        Pair(
-            first = (ticket.value?.dateTime ?: currentDateTime.timeInMillis).dateFormatToHour(),
-            second = (ticket.value?.dateTime ?: currentDateTime.timeInMillis).dateFormatToMinute(),
+    var selectedDate by remember(ticket.value?.dateTime) {
+        mutableLongStateOf(
+            ticket.value?.dateTime ?: currentDateTime.timeInMillis
         )
-    ) }
+    }
+    var selectedTime by remember(ticket.value?.dateTime) {
+        mutableStateOf(
+            Pair(
+                first = (ticket.value?.dateTime ?: currentDateTime.timeInMillis).dateFormatToHour(),
+                second = (ticket.value?.dateTime
+                    ?: currentDateTime.timeInMillis).dateFormatToMinute(),
+            )
+        )
+    }
 
-    val title = stringResource(if (licence == null) R.string.add_new_ticket else R.string.edit_ticket)
+    val title =
+        stringResource(if (licence == null) R.string.add_new_ticket else R.string.edit_ticket)
     TopBar(
         title = title,
         onBackPressed = onBackClicked
@@ -116,33 +127,55 @@ private fun ManageScreen(
         var inboundText by remember(ticket.value?.inbound) { mutableLongStateOf(ticket.value?.inbound.orZero()) }
         var outboundText by remember(ticket.value?.outbound) { mutableLongStateOf(ticket.value?.outbound.orZero()) }
 
+        val isLicenceTextError by remember(licenceNumberText) { derivedStateOf { licenceNumberText.isEmpty() } }
+        val isDriverTextError by remember(driverNameText) { derivedStateOf { driverNameText.isEmpty() } }
+        val isInboundTextError by remember(inboundText) { derivedStateOf { inboundText.isZero() } }
+        val isOutboundTextError by remember(outboundText, ticket, inboundText) {
+            derivedStateOf {
+                if (ticket.value != null) outboundText.isZero() || outboundText <= inboundText else false
+            }
+        }
+        val isSubmitButtonEnabled by remember(
+            isLicenceTextError,
+            isDriverTextError,
+            isInboundTextError,
+            isOutboundTextError
+        ) {
+            derivedStateOf {
+                !isLicenceTextError && !isDriverTextError && !isInboundTextError && !isOutboundTextError
+            }
+        }
+
         StickyBottom(
             modifier = Modifier.fillMaxSize(),
             stickyBottomContent = {
-                OutlinedButton(onClick = {
-                    if (licence == null) {
-                        viewModel.add(
-                            Ticket.newTicket(
-                                licence = licenceNumberText,
-                                driver = driverNameText,
-                                inbound = inboundText,
-                                dateTime = selectedDate
+                OutlinedButton(
+                    onClick = {
+                        if (licence == null) {
+                            viewModel.add(
+                                Ticket.newTicket(
+                                    licence = licenceNumberText,
+                                    driver = driverNameText,
+                                    inbound = inboundText,
+                                    dateTime = selectedDate
+                                )
                             )
-                        )
-                    } else {
-                        viewModel.update(
-                            Ticket.editTicket(
-                                licence = licenceNumberText,
-                                driver = driverNameText,
-                                inbound = inboundText,
-                                outbound = outboundText,
-                                dateTime = selectedDate
+                        } else {
+                            viewModel.update(
+                                Ticket.editTicket(
+                                    licence = licenceNumberText,
+                                    driver = driverNameText,
+                                    inbound = inboundText,
+                                    outbound = outboundText,
+                                    dateTime = selectedDate
+                                )
                             )
-                        )
-                    }
+                        }
 
-                    onBackClicked()
-                }) {
+                        onBackClicked()
+                    },
+                    enabled = isSubmitButtonEnabled
+                ) {
                     Text(text = stringResource(R.string.submit))
                 }
             },
@@ -152,53 +185,64 @@ private fun ManageScreen(
                         .verticalScroll(rememberScrollState())
                         .padding(16.dp)
                 ) {
+                    DateButton(
+                        title = stringResource(R.string.date),
+                        value = selectedDate.toFormattedDateString(DateFormat.DAY_MONTH_YEAR),
+                        onClicked = {
+                            shouldShowDatePicker.value = true
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    DateButton(
+                        title = stringResource(R.string.time),
+                        value = "${selectedTime.first}:${selectedTime.second}",
+                        onClicked = {
+                            shouldShowTimePicker.value = true
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = ticket.value == null,
+                        label = {
+                            Text(text = stringResource(R.string.licence_number))
+                        },
+                        isError = isLicenceTextError,
+                        value = licenceNumberText,
+                        onValueChange = { licenceNumberText = it.uppercase().onlyAlphanumeric() }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = {
+                            Text(text = stringResource(R.string.driver_name))
+                        },
+                        value = driverNameText,
+                        isError = isDriverTextError,
+                        onValueChange = { driverNameText = it })
+
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        OutlinedButton(
-                            onClick = {
-                                shouldShowDatePicker.value = true
+                        OutlinedTextField(
+                            modifier = Modifier.weight(1f),
+                            label = {
+                                Text(text = stringResource(R.string.inbound_weight))
                             },
-                            content = {
-                                Text(text = selectedDate.toFormattedDateString(DateFormat.DAY_MONTH_YEAR))
-                            },
-                            shape = RoundedCornerShape(16.dp)
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        OutlinedButton(
-                            onClick = {
-                                shouldShowTimePicker.value = true
-                            },
-                            content = {
-                                Text(text = "${selectedTime.first}:${selectedTime.second}")
-                            },
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                    }
-
-                    OutlinedTextField(modifier = Modifier.fillMaxWidth(), enabled = ticket.value == null , label = {
-                        Text(text = stringResource(R.string.licence_number))
-                    }, value = licenceNumberText, onValueChange = { licenceNumberText = it })
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = {
-                        Text(text = stringResource(R.string.driver_name))
-                    }, value = driverNameText, onValueChange = { driverNameText = it })
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        OutlinedTextField(modifier = Modifier.weight(1f), label = {
-                            Text(text = stringResource(R.string.inbound_weight))
-                        }, value = inboundText.toString(), onValueChange = { inboundText = it.safeToLong() }, suffix = {
-                            Text(text = stringResource(R.string.ton))
-                        })
+                            value = inboundText.toString(),
+                            isError = isInboundTextError,
+                            onValueChange = { inboundText = it.safeToLong() },
+                            suffix = {
+                                Text(text = stringResource(R.string.ton))
+                            })
 
                         licence?.let {
                             Spacer(modifier = Modifier.width(8.dp))
@@ -208,6 +252,7 @@ private fun ManageScreen(
                                 label = {
                                     Text(text = stringResource(R.string.outbound_weight))
                                 },
+                                isError = isOutboundTextError,
                                 value = outboundText.toString(),
                                 onValueChange = { outboundText = it.safeToLong() },
                                 suffix = {
@@ -228,6 +273,7 @@ private fun ManageScreen(
         }
     )
 
+    // TODO: Fix time picker initial value
     TimePickerDialog(
         shouldShowPicker = shouldShowTimePicker,
         selectedTime = selectedTime,
