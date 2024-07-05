@@ -12,7 +12,7 @@ interface TicketsDao {
     fun getTickets(): Flow<List<TicketEntity>>
 
     @Query("SELECT * FROM '${TicketEntity.TABLE_NAME}' WHERE ${TicketEntity.LICENCE_COLUMN} = :licence LIMIT 1")
-    suspend fun getTicketById(licence: String): TicketEntity?
+    fun getTicketDetail(licence: String): Flow<TicketEntity?>
 
     @Upsert
     suspend fun upsertTicket(ticket: TicketEntity)

@@ -32,5 +32,20 @@ data class Ticket(
             dateTime = dateTime,
             netWeight = inbound
         )
+
+        fun editTicket(
+            licence: String,
+            driver: String,
+            inbound: Long,
+            outbound: Long,
+            dateTime: Long
+        ) = Ticket(
+            licence = licence,
+            driver = driver,
+            inbound = inbound,
+            outbound = outbound,
+            dateTime = dateTime,
+            netWeight = inbound
+        )
     }
 }

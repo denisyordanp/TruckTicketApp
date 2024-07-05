@@ -1,7 +1,6 @@
 package com.denisyordanp.truckticketapp.data.implementation
 
 import com.denisyordanp.truckticketapp.common.di.DefaultDispatcher
-import com.denisyordanp.truckticketapp.common.di.IoDispatcher
 import com.denisyordanp.truckticketapp.core.database.dao.TicketsDao
 import com.denisyordanp.truckticketapp.data.api.LocalDataRepository
 import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
@@ -15,6 +14,7 @@ class LocalDataRepositoryImpl @Inject constructor(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) : LocalDataRepository {
     override fun getTickets() = dao.getTickets().flowOn(dispatcher)
+    override fun getTicketDetail(licence: String) = dao.getTicketDetail(licence).flowOn(dispatcher)
 
     override suspend fun insertTicket(ticket: TicketEntity) = withContext(dispatcher) {
         dao.upsertTicket(ticket)

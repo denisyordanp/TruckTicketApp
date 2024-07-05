@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Truck Ticket App</string>
+    <string name="tickets">Tickets</string>
+    <string name="add_ticket">Add Ticket</string>
+    <string name="edit">Edit</string>
+    <string name="select_sort_ticket">Select sort ticket</string>
+    <string name="by_date">by Date</string>
+    <string name="by_driver_name">by Driver Name</string>
+    <string name="by_licence_number">by Licence number</string>
+    <string name="add_new_ticket">Add new Ticket</string>
+    <string name="edit_ticket">Edit Ticket</string>
+    <string name="submit">Submit</string>
+    <string name="licence_number">Licence number</string>
+    <string name="driver_name">Driver name</string>
+    <string name="inbound_weight">Inbound weight</string>
+    <string name="outbound_weight">Outbound weight</string>
+    <string name="ton">Ton</string>
+    <string name="error_please_try_again_later">Error! Please try again later.</string>
 </resources>

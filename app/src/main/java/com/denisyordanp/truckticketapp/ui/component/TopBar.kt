@@ -1,5 +1,6 @@
 package com.denisyordanp.truckticketapp.ui.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.Default
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +34,7 @@ fun TopBar(
     content: @Composable () -> Unit
 ) {
     Column {
-        Surface(shadowElevation = 1.dp) {
+        Box {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -40,15 +43,14 @@ fun TopBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 onBackPressed?.let {
-                    IconButton(onClick = it) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null
-                        )
+                    IconButton(
+                        onClick = it
+                    ) {
+                        Icon(imageVector = Default.ArrowBack, contentDescription = null)
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
-                }
+                } ?: Spacer(modifier = Modifier.width(40.dp))
 
                 Text(
                     modifier = Modifier.weight(1f),
@@ -63,15 +65,14 @@ fun TopBar(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IconButton(
-                        onClick = {
-                            onRightButtonPressed?.invoke()
-                        }
+                        onClick = { onRightButtonPressed?.invoke() }
                     ) {
                         Icon(imageVector = it, contentDescription = null)
                     }
-                }
+                } ?: Spacer(modifier = Modifier.width(40.dp))
             }
         }
+        Divider()
         content()
     }
 }

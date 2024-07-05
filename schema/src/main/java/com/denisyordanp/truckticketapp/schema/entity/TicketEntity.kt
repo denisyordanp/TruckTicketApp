@@ -3,7 +3,7 @@ package com.denisyordanp.truckticketapp.schema.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.denisyordanp.truckticketapp.common.extension.LongExtension.orZero
+import com.denisyordanp.truckticketapp.common.extension.orZero
 import com.denisyordanp.truckticketapp.schema.ui.Ticket
 
 @Entity(tableName = TicketEntity.TABLE_NAME)

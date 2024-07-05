@@ -19,11 +19,11 @@ import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.denisyordanp.truckticketapp.util.LaunchedEffectKeyed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,9 +42,9 @@ fun DatePickerDialog(
             datePickerState.selectedDateMillis?.let { onConfirm(it) }
         },
         content = {
-            LaunchedEffect(Unit) {
-                if (datePickerState.selectedDateMillis != selectedDate) {
-                    datePickerState.setSelection(selectedDate)
+            LaunchedEffectKeyed(datePickerState) {
+                if (it.selectedDateMillis != selectedDate) {
+                    it.setSelection(selectedDate)
                 }
             }
 
@@ -56,13 +56,12 @@ fun DatePickerDialog(
 @Composable
 fun TimePickerDialog(
     shouldShowPicker: MutableState<Boolean>,
-    selectedHour: Int,
-    selectedMinute: Int,
+    selectedTime: Pair<Int, Int>,
     onConfirm: (selectedTime: Pair<Int, Int>) -> Unit
 ) {
     var timePickerState = rememberTimePickerState(
-        initialHour = selectedHour,
-        initialMinute = selectedMinute,
+        initialHour = selectedTime.first,
+        initialMinute = selectedTime.second,
         is24Hour = true
     )
 
@@ -72,9 +71,9 @@ fun TimePickerDialog(
             onConfirm(Pair(timePickerState.hour, timePickerState.minute))
         },
         content = {
-            LaunchedEffect(Unit) {
-                if (timePickerState.hour != selectedHour || timePickerState.minute != selectedMinute) {
-                    timePickerState = TimePickerState(selectedHour, selectedMinute, true)
+            LaunchedEffectKeyed(timePickerState) {
+                if (it.hour != selectedTime.first || it.minute != selectedTime.second) {
+                    timePickerState = TimePickerState(selectedTime.first, selectedTime.second, true)
                 }
             }
 

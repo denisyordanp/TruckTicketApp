@@ -20,6 +20,7 @@ import com.denisyordanp.truckticketapp.util.LocalCoroutineScope
 import com.denisyordanp.truckticketapp.util.LocalNavController
 import com.denisyordanp.truckticketapp.util.LocalSnackBar
 import com.denisyordanp.truckticketapp.ui.main.AppNavigator.Destinations.TICKET_SCREEN
+import com.denisyordanp.truckticketapp.ui.screen.detail.detailRoute
 import com.denisyordanp.truckticketapp.ui.screen.manage.manageRoute
 import com.denisyordanp.truckticketapp.ui.screen.tickets.ticketsRoute
 import com.denisyordanp.truckticketapp.ui.theme.TruckTicketAppTheme
@@ -52,6 +53,8 @@ class MainActivity : ComponentActivity() {
                             ticketsRoute(this)
 
                             manageRoute(this)
+
+                            detailRoute(this)
                         }
                     }
                 }
