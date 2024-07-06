@@ -15,8 +15,8 @@ object AppNavigator {
         }
     )
 
-    fun toDetailScreen(licence: String) = "$DETAIL_SCREEN_PATH/$licence"
-    fun toManageScreen(licence: String? = null) = "$MANAGE_SCREEN_PATH/${licence.orDefault("#")}"
+    fun toDetailScreen(id: String) = "$DETAIL_SCREEN_PATH/$id"
+    fun toManageScreen(id: String? = null) = "$MANAGE_SCREEN_PATH/${id.orDefault("#")}"
 
     enum class Destinations(val route: String) {
         TICKET_SCREEN("ticket"),

@@ -29,11 +29,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.denisyordanp.truckticketapp.R
+import com.denisyordanp.truckticketapp.common.extension.capitalizeFirstChar
 import com.denisyordanp.truckticketapp.common.extension.dateFormatToHour
 import com.denisyordanp.truckticketapp.common.extension.dateFormatToMinute
 import com.denisyordanp.truckticketapp.common.extension.isZero
 import com.denisyordanp.truckticketapp.common.extension.onlyAlphanumeric
 import com.denisyordanp.truckticketapp.common.extension.orZero
+import com.denisyordanp.truckticketapp.common.extension.pairOf
 import com.denisyordanp.truckticketapp.common.extension.safeToLong
 import com.denisyordanp.truckticketapp.common.extension.toFormattedDateString
 import com.denisyordanp.truckticketapp.common.util.DateFormat
@@ -50,7 +52,7 @@ import com.denisyordanp.truckticketapp.util.LaunchedEffectOneTime
 import com.denisyordanp.truckticketapp.util.LocalCoroutineScope
 import com.denisyordanp.truckticketapp.util.LocalNavController
 import com.denisyordanp.truckticketapp.util.LocalSnackBar
-import com.denisyordanp.truckticketapp.util.getStringArguments
+import com.denisyordanp.truckticketapp.util.getLongIdArguments
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -68,7 +70,7 @@ fun manageRoute(
             val coroutineScope = LocalCoroutineScope.current
 
             ManageScreen(
-                licence = it.getStringArguments(LICENCE_ARGS),
+                id = it.getLongIdArguments(LICENCE_ARGS),
                 onError = {
                     coroutineScope.launch {
                         snackBar.showSnackbar(context.getString(R.string.error_please_try_again_later))
@@ -84,14 +86,14 @@ fun manageRoute(
 
 @Composable
 private fun ManageScreen(
-    licence: String? = null,
+    id: Long? = null,
     viewModel: ManageScreenViewModel = hiltViewModel(),
     onError: (e: Exception) -> Unit,
     onBackClicked: () -> Unit
 ) {
-    licence?.let {
+    id?.let {
         LaunchedEffectOneTime {
-            viewModel.setLicence(it)
+            viewModel.setId(it)
         }
     }
 
@@ -108,7 +110,7 @@ private fun ManageScreen(
     }
     var selectedTime by remember(ticket.value?.dateTime) {
         mutableStateOf(
-            Pair(
+            pairOf(
                 first = (ticket.value?.dateTime ?: currentDateTime.timeInMillis).dateFormatToHour(),
                 second = (ticket.value?.dateTime
                     ?: currentDateTime.timeInMillis).dateFormatToMinute(),
@@ -117,7 +119,7 @@ private fun ManageScreen(
     }
 
     val title =
-        stringResource(if (licence == null) R.string.add_new_ticket else R.string.edit_ticket)
+        stringResource(if (id == null) R.string.add_new_ticket else R.string.edit_ticket)
     TopBar(
         title = title,
         onBackPressed = onBackClicked
@@ -151,7 +153,7 @@ private fun ManageScreen(
             stickyBottomContent = {
                 OutlinedButton(
                     onClick = {
-                        if (licence == null) {
+                        if (id == null) {
                             viewModel.add(
                                 Ticket.newTicket(
                                     licence = licenceNumberText,
@@ -163,6 +165,7 @@ private fun ManageScreen(
                         } else {
                             viewModel.update(
                                 Ticket.editTicket(
+                                    id = ticket.value?.id.orZero(),
                                     licence = licenceNumberText,
                                     driver = driverNameText,
                                     inbound = inboundText,
@@ -225,7 +228,7 @@ private fun ManageScreen(
                         },
                         value = driverNameText,
                         isError = isDriverTextError,
-                        onValueChange = { driverNameText = it })
+                        onValueChange = { driverNameText = it.capitalizeFirstChar() })
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -244,7 +247,7 @@ private fun ManageScreen(
                                 Text(text = stringResource(R.string.ton))
                             })
 
-                        licence?.let {
+                        id?.let {
                             Spacer(modifier = Modifier.width(8.dp))
 
                             OutlinedTextField(

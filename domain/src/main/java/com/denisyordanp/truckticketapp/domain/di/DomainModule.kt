@@ -2,10 +2,12 @@ package com.denisyordanp.truckticketapp.domain.di
 
 import com.denisyordanp.truckticketapp.domain.api.AddNewTicket
 import com.denisyordanp.truckticketapp.domain.api.GetTicketDetail
+import com.denisyordanp.truckticketapp.domain.api.GetTicketFilter
 import com.denisyordanp.truckticketapp.domain.api.GetTruckTickets
 import com.denisyordanp.truckticketapp.domain.api.UpdateTicket
 import com.denisyordanp.truckticketapp.domain.implementation.AddNewTicketImpl
 import com.denisyordanp.truckticketapp.domain.implementation.GetTicketDetailImpl
+import com.denisyordanp.truckticketapp.domain.implementation.GetTicketFilterImpl
 import com.denisyordanp.truckticketapp.domain.implementation.GetTruckTicketsImpl
 import com.denisyordanp.truckticketapp.domain.implementation.UpdateTicketImpl
 import dagger.Binds
@@ -35,4 +37,9 @@ abstract class DomainModule {
     abstract fun bindUpdateTicket(
         updateTicketImpl: UpdateTicketImpl
     ): UpdateTicket
+
+    @Binds
+    abstract fun bindGetTicketFilter(
+        getTicketFilterImpl: GetTicketFilterImpl
+    ): GetTicketFilter
 }

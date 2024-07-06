@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.Lazily
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,11 +23,11 @@ class ManageScreenViewModel @Inject constructor(
     private val updateTicket: UpdateTicket
 ) : ViewModel() {
 
-    private val _licence = MutableStateFlow<String?>(null)
+    private val _id = MutableStateFlow<Long?>(null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val ticket = _licence.flatMapLatest { licence ->
-        licence?.let { getTicketDetail(it) } ?: emptyFlow()
+    val ticket = _id.flatMapLatest { id ->
+        id?.let { getTicketDetail(it) } ?: emptyFlow()
     }.stateIn(
         viewModelScope,
         Lazily,
@@ -39,8 +38,8 @@ class ManageScreenViewModel @Inject constructor(
         addNewTicket(ticket)
     }
 
-    fun setLicence(licence: String) = viewModelScope.launch {
-        _licence.emit(licence)
+    fun setId(id: Long) = viewModelScope.launch {
+        _id.emit(id)
     }
 
     fun update(ticket: Ticket) = viewModelScope.launch {

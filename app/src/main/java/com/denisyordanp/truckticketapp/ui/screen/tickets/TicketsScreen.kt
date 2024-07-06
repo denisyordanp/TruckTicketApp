@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -26,18 +27,24 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.denisyordanp.truckticketapp.R
+import com.denisyordanp.truckticketapp.common.extension.pairOf
 import com.denisyordanp.truckticketapp.common.extension.toFormattedDateString
 import com.denisyordanp.truckticketapp.common.util.DateFormat
+import com.denisyordanp.truckticketapp.common.util.TicketParam
+import com.denisyordanp.truckticketapp.common.util.TicketParam.DATE
+import com.denisyordanp.truckticketapp.common.util.TicketParam.DRIVER
+import com.denisyordanp.truckticketapp.common.util.TicketParam.LICENSE
 import com.denisyordanp.truckticketapp.schema.ui.Ticket
+import com.denisyordanp.truckticketapp.ui.component.FilterItem
 import com.denisyordanp.truckticketapp.ui.component.SortItem
 import com.denisyordanp.truckticketapp.ui.component.StickyBottom
 import com.denisyordanp.truckticketapp.ui.component.TopBar
@@ -62,10 +69,10 @@ fun ticketsRoute(
 
             TicketsScreen(
                 onItemClicked = {
-                    navController.navigate(AppNavigator.toDetailScreen(it.licence))
+                    navController.navigate(AppNavigator.toDetailScreen(it.id.toString()))
                 },
                 onEditClicked = {
-                    navController.navigate(AppNavigator.toManageScreen(it.licence))
+                    navController.navigate(AppNavigator.toManageScreen(it.id.toString()))
                 },
                 onAddButtonClicked = {
                     navController.navigate(AppNavigator.toManageScreen())
@@ -90,6 +97,10 @@ private fun TicketsScreen(
 ) {
     val shouldShowSortModal = remember { mutableStateOf(false) }
     val currentSort = viewModel.ticketSort.collectAsState()
+    val selectedFilter = viewModel.ticketFilter.collectAsState()
+    val filterDate = viewModel.filterDate.collectAsState()
+    val filterLicence = viewModel.filterLicence.collectAsState()
+    val filterDriver = viewModel.filterDriver.collectAsState()
 
     TopBar(
         title = stringResource(R.string.tickets),
@@ -128,9 +139,19 @@ private fun TicketsScreen(
     SortOptionModal(
         shouldShow = shouldShowSortModal,
         currentSort = currentSort.value,
-        sortOptions = TicketSort.values(),
+        sortOptions = TicketParam.values(),
+        filterDate = filterDate.value,
+        filterLicence = filterLicence.value,
+        filterDriver = filterDriver.value,
+        selectedFilter = selectedFilter.value,
         onSelectSort = {
             viewModel.selectSort(it)
+        },
+        onSelectFilter = {
+            viewModel.selectFilter(it)
+        },
+        onClearFilter = {
+            viewModel.selectFilter(null)
         }
     )
 }
@@ -162,7 +183,10 @@ fun TicketItem(
 
         Spacer(modifier = Modifier.width(8.dp))
         IconButton(onClick = onEditClicked) {
-            Icon(imageVector = Icons.Default.Edit, contentDescription = stringResource(R.string.edit))
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = stringResource(R.string.edit)
+            )
         }
     }
 }
@@ -171,9 +195,15 @@ fun TicketItem(
 @Composable
 private fun SortOptionModal(
     shouldShow: MutableState<Boolean>,
-    currentSort: TicketSort,
-    sortOptions: Array<TicketSort>,
-    onSelectSort: (sort: TicketSort) -> Unit,
+    currentSort: TicketParam,
+    sortOptions: Array<TicketParam>,
+    filterDate: List<Long>,
+    filterLicence: List<String>,
+    filterDriver: List<String>,
+    selectedFilter: Pair<TicketParam, String>?,
+    onSelectSort: (sort: TicketParam) -> Unit,
+    onSelectFilter: (filter: Pair<TicketParam, String>) -> Unit,
+    onClearFilter: () -> Unit
 ) {
     if (shouldShow.value) {
         ModalBottomSheet(
@@ -184,35 +214,160 @@ private fun SortOptionModal(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = CenterHorizontally
+                    .padding(8.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.select_sort_ticket),
-                    style = MaterialTheme.typography.titleMedium
+                SortContent(
+                    currentSort = currentSort,
+                    sortOptions = sortOptions,
+                    onSelectSort = {
+                        onSelectSort(it)
+                        shouldShow.value = false
+                    }
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-                LazyColumn {
-                    items(sortOptions) {
-                        SortItem(
-                            title = it.getSortTitle(),
-                            isSelected = it == currentSort,
-                            onItemClicked = {
-                                onSelectSort(it)
-                                shouldShow.value = false
-                            })
+                FilterContent(
+                    filterDate = filterDate,
+                    filterLicence = filterLicence,
+                    filterDriver = filterDriver,
+                    selectedFilter = selectedFilter,
+                    onSelectFilter = {
+                        if (it != selectedFilter) onSelectFilter(it) else onClearFilter()
+                        shouldShow.value = false
                     }
-                }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun TicketSort.getSortTitle() = when (this) {
-    TicketSort.DATE -> stringResource(R.string.by_date)
-    TicketSort.DRIVER -> stringResource(R.string.by_driver_name)
-    TicketSort.LICENSE -> stringResource(R.string.by_licence_number)
+private fun SortContent(
+    currentSort: TicketParam,
+    sortOptions: Array<TicketParam>,
+    onSelectSort: (sort: TicketParam) -> Unit
+) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(R.string.select_sort_ticket),
+        style = MaterialTheme.typography.titleLarge,
+        textAlign = TextAlign.Center
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    LazyColumn {
+        items(sortOptions) {
+            SortItem(
+                title = it.getSortTitle(),
+                isSelected = it == currentSort,
+                onItemClicked = {
+                    onSelectSort(it)
+                })
+        }
+    }
+}
+
+@Composable
+private fun FilterContent(
+    filterDate: List<Long>,
+    filterLicence: List<String>,
+    filterDriver: List<String>,
+    selectedFilter: Pair<TicketParam, String>?,
+    onSelectFilter: (filter: Pair<TicketParam, String>) -> Unit
+) {
+    if (filterDate.isNotEmpty() || filterLicence.isNotEmpty() || filterDriver.isNotEmpty()) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(R.string.select_filter_by),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(R.string.date),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(filterDate) {
+                val formattedDate = it.toFormattedDateString(DateFormat.DAY_MONTH_YEAR)
+                FilterItem(
+                    title = formattedDate,
+                    isSelected = selectedFilter?.first.checkFilter(
+                        DATE,
+                        pairOf(formattedDate, selectedFilter?.second)
+                    ),
+                    onItemClick = {
+                        onSelectFilter(pairOf(DATE, formattedDate))
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.licence_number),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(filterLicence) {
+                FilterItem(
+                    title = it,
+                    isSelected = selectedFilter?.first.checkFilter(
+                        LICENSE,
+                        pairOf(it, selectedFilter?.second)
+                    ),
+                    onItemClick = {
+                        onSelectFilter(pairOf(LICENSE, it))
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.driver_name),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(filterDriver) {
+                FilterItem(
+                    title = it,
+                    isSelected = selectedFilter?.first.checkFilter(
+                        DRIVER,
+                        pairOf(it, selectedFilter?.second)
+                    ),
+                    onItemClick = {
+                        onSelectFilter(pairOf(DRIVER, it))
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+private fun TicketParam?.checkFilter(current: TicketParam, compare: Pair<String, String?>) =
+    if (this == current) compare.first.equals(compare.second, true) else false
+
+@Composable
+private fun TicketParam.getSortTitle() = when (this) {
+    DATE -> stringResource(R.string.by_date)
+    DRIVER -> stringResource(R.string.by_driver_name)
+    LICENSE -> stringResource(R.string.by_licence_number)
 }

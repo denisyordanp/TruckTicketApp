@@ -3,6 +3,7 @@ package com.denisyordanp.truckticketapp.schema.ui
 import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
 
 data class Ticket(
+    val id: Long,
     val licence: String,
     val driver: String,
     val inbound: Long,
@@ -11,6 +12,7 @@ data class Ticket(
     val netWeight: Long?
 ) {
     fun toTicketEntity() = TicketEntity(
+        id = id,
         licence = licence,
         driver = driver,
         inbound = inbound,
@@ -25,6 +27,7 @@ data class Ticket(
             inbound: Long,
             dateTime: Long
         ) = Ticket(
+            id = 0L,
             licence = licence,
             driver = driver,
             inbound = inbound,
@@ -34,12 +37,14 @@ data class Ticket(
         )
 
         fun editTicket(
+            id: Long,
             licence: String,
             driver: String,
             inbound: Long,
             outbound: Long,
             dateTime: Long
         ) = Ticket(
+            id = id,
             licence = licence,
             driver = driver,
             inbound = inbound,

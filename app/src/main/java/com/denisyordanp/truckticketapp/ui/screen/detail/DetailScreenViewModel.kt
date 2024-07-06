@@ -18,19 +18,19 @@ class DetailScreenViewModel @Inject constructor(
     private val getTicketDetail: GetTicketDetail
 ) : ViewModel() {
 
-    private val _licence = MutableStateFlow<String?>(null)
+    private val _id = MutableStateFlow<Long?>(null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val ticket = _licence.flatMapLatest { licence ->
-        licence?.let { getTicketDetail(it) } ?: emptyFlow()
+    val ticket = _id.flatMapLatest { id ->
+        id?.let { getTicketDetail(it) } ?: emptyFlow()
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         null
     )
 
-    fun setLicence(licence: String) = viewModelScope.launch {
-        _licence.emit(licence)
+    fun setId(id: Long) = viewModelScope.launch {
+        _id.emit(id)
     }
 
 }

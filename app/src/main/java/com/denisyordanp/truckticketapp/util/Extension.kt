@@ -1,23 +1,20 @@
 package com.denisyordanp.truckticketapp.util
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.cache
-import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavBackStackEntry
-import com.denisyordanp.truckticketapp.ui.main.AppNavigator
+import com.denisyordanp.truckticketapp.common.extension.safeToLong
+import com.denisyordanp.truckticketapp.common.extension.tryCatchWithDefault
 import kotlinx.coroutines.CoroutineScope
 
-fun NavBackStackEntry.getStringArguments(key: String): String? {
+fun NavBackStackEntry.getLongIdArguments(key: String): Long? {
     val args = arguments?.getString(key)
 
-    return if (args.equals("#")) null else args
+    return if (args.equals("#")) null else args?.toLongOrNull()
 }
 
 @Composable

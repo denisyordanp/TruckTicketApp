@@ -14,7 +14,7 @@ class LocalDataRepositoryImpl @Inject constructor(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) : LocalDataRepository {
     override fun getTickets() = dao.getTickets().flowOn(dispatcher)
-    override fun getTicketDetail(licence: String) = dao.getTicketDetail(licence).flowOn(dispatcher)
+    override fun getTicketDetail(id: Long) = dao.getTicketDetail(id).flowOn(dispatcher)
 
     override suspend fun insertTicket(ticket: TicketEntity) = withContext(dispatcher) {
         dao.upsertTicket(ticket)

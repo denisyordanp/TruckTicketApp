@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.denisyordanp.truckticketapp.R
+import com.denisyordanp.truckticketapp.common.extension.orZero
 import com.denisyordanp.truckticketapp.common.extension.toFormattedDateString
 import com.denisyordanp.truckticketapp.common.util.DateFormat
 import com.denisyordanp.truckticketapp.schema.ui.Ticket
@@ -34,7 +35,7 @@ import com.denisyordanp.truckticketapp.util.LaunchedEffectOneTime
 import com.denisyordanp.truckticketapp.util.LocalCoroutineScope
 import com.denisyordanp.truckticketapp.util.LocalNavController
 import com.denisyordanp.truckticketapp.util.LocalSnackBar
-import com.denisyordanp.truckticketapp.util.getStringArguments
+import com.denisyordanp.truckticketapp.util.getLongIdArguments
 import kotlinx.coroutines.launch
 
 fun detailRoute(
@@ -51,7 +52,7 @@ fun detailRoute(
             val coroutineScope = LocalCoroutineScope.current
 
             DetailScreen(
-                licence = it.getStringArguments(LICENCE_ARGS),
+                id = it.getLongIdArguments(LICENCE_ARGS),
                 onError = {
                     coroutineScope.launch {
                         snackBar.showSnackbar(context.getString(R.string.error_please_try_again_later))
@@ -61,7 +62,7 @@ fun detailRoute(
                     navController.popBackStack()
                 },
                 onEditClicked = { ticket ->
-                    navController.navigate(AppNavigator.toManageScreen(ticket.licence))
+                    navController.navigate(AppNavigator.toManageScreen(ticket.id.toString()))
                 }
             )
         }
@@ -70,16 +71,16 @@ fun detailRoute(
 
 @Composable
 private fun DetailScreen(
-    licence: String? = null,
+    id: Long? = null,
     viewModel: DetailScreenViewModel = hiltViewModel(),
     onError: (e: Exception) -> Unit,
     onEditClicked: (ticket: Ticket) -> Unit,
     onBackClicked: () -> Unit
 ) {
 
-    licence?.let {
+    id?.let {
         LaunchedEffectOneTime {
-            viewModel.setLicence(it)
+            viewModel.setId(it)
         }
     }
 
@@ -127,18 +128,22 @@ private fun DetailScreen(
                             title = stringResource(R.string.inbound_weight),
                             value = it.inbound.toString()
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        it.outbound?.let { outbound ->
+                            Spacer(modifier = Modifier.width(8.dp))
+                            TextContentViewer(
+                                modifier = Modifier.weight(1f),
+                                title = stringResource(R.string.outbound_weight),
+                                value = outbound.toString()
+                            )
+                        }
+                    }
+                    if (it.netWeight.orZero() > 0) {
+                        Spacer(modifier = Modifier.height(16.dp))
                         TextContentViewer(
-                            modifier = Modifier.weight(1f),
-                            title = stringResource(R.string.outbound_weight),
-                            value = it.outbound.toString()
+                            title = stringResource(R.string.nett_weight),
+                            value = it.netWeight.toString()
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    TextContentViewer(
-                        title = stringResource(R.string.nett_weight),
-                        value = it.netWeight.toString()
-                    )
                 }
             }
         }

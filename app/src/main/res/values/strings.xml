@@ -4,6 +4,7 @@
     <string name="add_ticket">Add Ticket</string>
     <string name="edit">Edit</string>
     <string name="select_sort_ticket">Select sort ticket</string>
+    <string name="select_filter_by">Select filter by</string>
     <string name="by_date">by Date</string>
     <string name="by_driver_name">by Driver Name</string>
     <string name="by_licence_number">by Licence number</string>

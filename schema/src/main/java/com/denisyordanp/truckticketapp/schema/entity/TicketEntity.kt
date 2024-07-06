@@ -8,8 +8,10 @@ import com.denisyordanp.truckticketapp.schema.ui.Ticket
 
 @Entity(tableName = TicketEntity.TABLE_NAME)
 data class TicketEntity(
-    // TODO: Change primary key to auto generate because multiple licence should be allowed
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(ID_COLUMN)
+    val id: Long,
+
     @ColumnInfo(LICENCE_COLUMN)
     val licence: String,
 
@@ -27,6 +29,7 @@ data class TicketEntity(
 ) {
     companion object {
         const val TABLE_NAME = "ticket"
+        const val ID_COLUMN = "id"
         const val LICENCE_COLUMN = "licence"
         const val DRIVE_COLUMN = "driver"
         const val INBOUND_COLUMN = "inbound"
@@ -35,6 +38,7 @@ data class TicketEntity(
     }
 
     fun mapToTicket() = Ticket(
+        id = id,
         licence = licence,
         driver = driver,
         inbound = inbound,

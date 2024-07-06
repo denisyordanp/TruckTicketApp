@@ -23,6 +23,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.denisyordanp.truckticketapp.common.extension.pairOf
 import com.denisyordanp.truckticketapp.util.LaunchedEffectKeyed
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +69,7 @@ fun TimePickerDialog(
     BasePickerDialog(
         shouldShowPicker = shouldShowPicker,
         onConfirm = {
-            onConfirm(Pair(timePickerState.hour, timePickerState.minute))
+            onConfirm(pairOf(timePickerState.hour, timePickerState.minute))
         },
         content = {
             LaunchedEffectKeyed(timePickerState) {

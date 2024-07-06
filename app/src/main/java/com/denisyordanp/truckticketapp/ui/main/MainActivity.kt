@@ -41,8 +41,6 @@ class MainActivity : ComponentActivity() {
                     val navController = LocalNavController.current
 
                     Scaffold(
-                        modifier = Modifier
-                            .systemBarsPadding(),
                         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                     ) { padding ->
                         NavHost(
