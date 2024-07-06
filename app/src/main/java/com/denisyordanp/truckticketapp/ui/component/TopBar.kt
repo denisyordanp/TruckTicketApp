@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.Icons.Default
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons.AutoMirrored.Default
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +44,10 @@ fun TopBar(
                     IconButton(
                         onClick = it
                     ) {
-                        Icon(imageVector = Default.ArrowBack, contentDescription = null)
+                        Icon(
+                            imageVector = Default.ArrowBack,
+                            contentDescription = null
+                        )
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -72,7 +73,7 @@ fun TopBar(
                 } ?: Spacer(modifier = Modifier.width(40.dp))
             }
         }
-        Divider()
+        HorizontalDivider()
         content()
     }
 }

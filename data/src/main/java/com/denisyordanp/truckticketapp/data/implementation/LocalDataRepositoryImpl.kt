@@ -20,6 +20,10 @@ class LocalDataRepositoryImpl @Inject constructor(
         dao.upsertTicket(ticket)
     }
 
+    override suspend fun insertTickets(tickets: List<TicketEntity>) {
+        dao.upsertTickets(tickets)
+    }
+
     override suspend fun updateTicket(ticket: TicketEntity) = withContext(dispatcher) {
         dao.upsertTicket(ticket)
     }

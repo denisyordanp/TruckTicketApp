@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.android.hilt)
+    alias(libs.plugins.google.service)
     id("kotlin-kapt")
 }
 
@@ -77,6 +78,9 @@ dependencies {
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.compiler)
+
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.analytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

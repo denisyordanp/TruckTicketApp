@@ -1,15 +1,16 @@
 package com.denisyordanp.truckticketapp.util
 
-data class UiState<T>(
-    val data: T? = null,
+data class UiState(
     val error: Exception? = null,
     val status: UiStatus = UiStatus.INITIAL
 ) {
     companion object {
-        fun <T> success(data: T) = UiState(data = data, status = UiStatus.SUCCESS)
+        fun success() = UiState(status = UiStatus.SUCCESS)
+        fun error(error: Exception) = UiState(error = error, status = UiStatus.ERROR)
+        fun loading() = UiState(status = UiStatus.LOADING)
     }
 }
 
 enum class UiStatus {
-    SUCCESS, REFRESH, INITIAL, ERROR
+    SUCCESS, LOADING, INITIAL, ERROR
 }

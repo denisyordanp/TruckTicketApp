@@ -13,6 +13,6 @@ class GetTicketDetailImpl @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : GetTicketDetail {
     override fun invoke(id: Long) = repository.getTicketDetail(id).map {
-        it?.mapToTicket()
+        it?.toTicket()
     }.flowOn(dispatcher)
 }

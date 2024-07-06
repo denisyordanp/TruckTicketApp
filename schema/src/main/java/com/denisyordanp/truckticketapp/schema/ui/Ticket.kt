@@ -1,6 +1,7 @@
 package com.denisyordanp.truckticketapp.schema.ui
 
 import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
+import com.denisyordanp.truckticketapp.schema.remote.TicketRemote
 
 data class Ticket(
     val id: Long,
@@ -12,6 +13,15 @@ data class Ticket(
     val netWeight: Long?
 ) {
     fun toTicketEntity() = TicketEntity(
+        id = id,
+        licence = licence,
+        driver = driver,
+        inbound = inbound,
+        outbound = outbound,
+        dateTime = dateTime
+    )
+
+    fun toTicketRemote(id: Long) = TicketRemote(
         id = id,
         licence = licence,
         driver = driver,
@@ -33,10 +43,10 @@ data class Ticket(
             inbound = inbound,
             outbound = null,
             dateTime = dateTime,
-            netWeight = inbound
+            netWeight = null
         )
 
-        fun editTicket(
+        fun existingTicket(
             id: Long,
             licence: String,
             driver: String,
@@ -50,7 +60,7 @@ data class Ticket(
             inbound = inbound,
             outbound = outbound,
             dateTime = dateTime,
-            netWeight = inbound
+            netWeight = null
         )
     }
 }

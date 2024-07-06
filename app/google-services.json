@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649545405830",
+    "project_id": "truckticketapp",
+    "storage_bucket": "truckticketapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649545405830:android:009310f0a089881802c807",
+        "android_client_info": {
+          "package_name": "com.denisyordanp.truckticketapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkLE8m3NLov36ln34sQZ1YKbJLmt5cars"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

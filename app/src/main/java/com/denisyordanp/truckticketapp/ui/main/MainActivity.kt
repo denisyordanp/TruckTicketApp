@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -16,14 +15,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.denisyordanp.truckticketapp.util.LocalCoroutineScope
-import com.denisyordanp.truckticketapp.util.LocalNavController
-import com.denisyordanp.truckticketapp.util.LocalSnackBar
 import com.denisyordanp.truckticketapp.ui.main.AppNavigator.Destinations.TICKET_SCREEN
 import com.denisyordanp.truckticketapp.ui.screen.detail.detailRoute
 import com.denisyordanp.truckticketapp.ui.screen.manage.manageRoute
 import com.denisyordanp.truckticketapp.ui.screen.tickets.ticketsRoute
 import com.denisyordanp.truckticketapp.ui.theme.TruckTicketAppTheme
+import com.denisyordanp.truckticketapp.util.LocalCoroutineScope
+import com.denisyordanp.truckticketapp.util.LocalNavController
+import com.denisyordanp.truckticketapp.util.LocalSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

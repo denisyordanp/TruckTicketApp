@@ -37,7 +37,7 @@ data class TicketEntity(
         const val DATE_TIME_COLUMN = "date_time"
     }
 
-    fun mapToTicket() = Ticket(
+    fun toTicket() = Ticket(
         id = id,
         licence = licence,
         driver = driver,

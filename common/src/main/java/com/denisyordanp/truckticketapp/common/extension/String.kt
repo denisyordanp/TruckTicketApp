@@ -4,7 +4,7 @@ import java.util.Locale
 
 fun String?.orDefault(default: String) = this ?: default
 
-fun String.safeToLong(default: Long = 0): Long {
+fun String.acceptDigitOnly(default: Long = 0): Long {
     val reformatted = this.replace(Regex("[^0-9]"), "")
 
     return tryCatchWithDefault(default) {

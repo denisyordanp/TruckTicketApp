@@ -1,6 +1,4 @@
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
-import com.denisyordanp.truckticketapp.TruckTicketModule
-import com.denisyordanp.truckticketapp.implementModule
 
 plugins {
     alias(libs.plugins.android.library)

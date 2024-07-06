@@ -18,7 +18,7 @@ class GetTruckTicketsImpl @Inject constructor(
 ) : GetTruckTickets {
     override fun invoke(sort: TicketParam, filter: Pair<TicketParam, String>?) =
         repository.getTickets().map { tickets ->
-            tickets.map { it.mapToTicket() }
+            tickets.map { it.toTicket() }
                 .sortedBy { it.getSorted(sort) }
                 .filterByParam(filter)
         }.flowOn(dispatcher)

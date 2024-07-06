@@ -15,5 +15,8 @@ interface TicketsDao {
     fun getTicketDetail(idTicket: Long): Flow<TicketEntity?>
 
     @Upsert
-    suspend fun upsertTicket(ticket: TicketEntity)
+    suspend fun upsertTicket(ticket: TicketEntity): Long
+
+    @Upsert
+    suspend fun upsertTickets(tickets: List<TicketEntity>)
 }

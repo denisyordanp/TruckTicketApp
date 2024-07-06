@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denisyordanp.truckticketapp.common.extension.pairOf
 import com.denisyordanp.truckticketapp.common.util.TicketParam
+import com.denisyordanp.truckticketapp.domain.api.FetchTickets
 import com.denisyordanp.truckticketapp.domain.api.GetTicketFilter
 import com.denisyordanp.truckticketapp.domain.api.GetTruckTickets
+import com.denisyordanp.truckticketapp.util.UiState
+import com.denisyordanp.truckticketapp.util.safeCallWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +23,12 @@ import javax.inject.Inject
 @HiltViewModel
 class TicketsScreenViewModel @Inject constructor(
     private val getTruckTickets: GetTruckTickets,
-    private val getTicketFilter: GetTicketFilter
+    getTicketFilter: GetTicketFilter,
+    private val fetchTickets: FetchTickets
 ) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
 
     private val _ticketSort = MutableStateFlow(TicketParam.DATE)
     val ticketSort = _ticketSort.asStateFlow()
@@ -55,6 +62,15 @@ class TicketsScreenViewModel @Inject constructor(
         Lazily,
         emptyList()
     )
+
+    fun loadTickets() = viewModelScope.launch {
+        safeCallWrapper(
+            call = { fetchTickets() },
+            onStart = { _uiState.emit(UiState.loading()) },
+            onFinish = { _uiState.emit(UiState.success()) },
+            onError = { _uiState.emit(UiState.error(it)) }
+        )
+    }
 
     fun selectSort(sort: TicketParam) = viewModelScope.launch {
         _ticketSort.emit(sort)

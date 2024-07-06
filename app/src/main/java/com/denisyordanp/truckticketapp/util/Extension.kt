@@ -7,8 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavBackStackEntry
-import com.denisyordanp.truckticketapp.common.extension.safeToLong
-import com.denisyordanp.truckticketapp.common.extension.tryCatchWithDefault
 import kotlinx.coroutines.CoroutineScope
 
 fun NavBackStackEntry.getLongIdArguments(key: String): Long? {
@@ -43,9 +41,11 @@ fun LaunchedEffectOneTime(
 
 suspend fun <T> safeCallWrapper(
     call: suspend () -> T,
+    onStart: (suspend () -> Unit)? = null,
     onFinish: (suspend (T) -> Unit)? = null,
     onError: (suspend (Exception) -> Unit)? = null,
 ) {
+    onStart?.invoke()
     try {
         val result = call()
         onFinish?.invoke(result)
@@ -53,7 +53,3 @@ suspend fun <T> safeCallWrapper(
         onError?.invoke(e)
     }
 }
-
-fun <T> UiState<T>.refresh() = this.copy(error = null, status = UiStatus.REFRESH)
-fun <T> UiState<T>.error(exception: Exception) =
-    this.copy(error = exception, status = UiStatus.ERROR)

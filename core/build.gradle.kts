@@ -29,6 +29,7 @@ android {
 
 dependencies {
     implementModule(TruckTicketModule.SCHEMA)
+    implementModule(TruckTicketModule.COMMON)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlin.coroutine)
@@ -39,6 +40,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.firestore)
 
     testImplementation(libs.junit)
 }

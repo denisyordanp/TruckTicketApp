@@ -1,11 +1,15 @@
 package com.denisyordanp.truckticketapp.domain.di
 
 import com.denisyordanp.truckticketapp.domain.api.AddNewTicket
+import com.denisyordanp.truckticketapp.domain.api.FetchTicketDetail
+import com.denisyordanp.truckticketapp.domain.api.FetchTickets
 import com.denisyordanp.truckticketapp.domain.api.GetTicketDetail
 import com.denisyordanp.truckticketapp.domain.api.GetTicketFilter
 import com.denisyordanp.truckticketapp.domain.api.GetTruckTickets
 import com.denisyordanp.truckticketapp.domain.api.UpdateTicket
 import com.denisyordanp.truckticketapp.domain.implementation.AddNewTicketImpl
+import com.denisyordanp.truckticketapp.domain.implementation.FetchTicketDetailImpl
+import com.denisyordanp.truckticketapp.domain.implementation.FetchTicketsImpl
 import com.denisyordanp.truckticketapp.domain.implementation.GetTicketDetailImpl
 import com.denisyordanp.truckticketapp.domain.implementation.GetTicketFilterImpl
 import com.denisyordanp.truckticketapp.domain.implementation.GetTruckTicketsImpl
@@ -42,4 +46,14 @@ abstract class DomainModule {
     abstract fun bindGetTicketFilter(
         getTicketFilterImpl: GetTicketFilterImpl
     ): GetTicketFilter
+
+    @Binds
+    abstract fun bindFetchTickets(
+        fetchTicketsImpl: FetchTicketsImpl
+    ): FetchTickets
+
+    @Binds
+    abstract fun bindFetchTicketDetail(
+        fetchTicketDetailImpl: FetchTicketDetailImpl
+    ): FetchTicketDetail
 }

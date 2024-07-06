@@ -50,9 +50,14 @@ import com.denisyordanp.truckticketapp.ui.component.StickyBottom
 import com.denisyordanp.truckticketapp.ui.component.TopBar
 import com.denisyordanp.truckticketapp.ui.main.AppNavigator
 import com.denisyordanp.truckticketapp.ui.main.AppNavigator.Destinations.TICKET_SCREEN
+import com.denisyordanp.truckticketapp.util.LaunchedEffectKeyed
+import com.denisyordanp.truckticketapp.util.LaunchedEffectOneTime
 import com.denisyordanp.truckticketapp.util.LocalCoroutineScope
 import com.denisyordanp.truckticketapp.util.LocalNavController
 import com.denisyordanp.truckticketapp.util.LocalSnackBar
+import com.denisyordanp.truckticketapp.util.UiStatus
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 
 fun ticketsRoute(
@@ -79,7 +84,7 @@ fun ticketsRoute(
                 },
                 onError = {
                     coroutineScope.launch {
-                        snackBar.showSnackbar(context.getString(R.string.error_please_try_again_later))
+                        snackBar.showSnackbar(context.getString(R.string.error_no_internet_connection))
                     }
                 }
             )
@@ -95,12 +100,21 @@ private fun TicketsScreen(
     onEditClicked: (ticket: Ticket) -> Unit,
     onAddButtonClicked: () -> Unit,
 ) {
+    LaunchedEffectOneTime {
+        viewModel.loadTickets()
+    }
+
     val shouldShowSortModal = remember { mutableStateOf(false) }
+    val uiState = viewModel.uiState.collectAsState()
     val currentSort = viewModel.ticketSort.collectAsState()
     val selectedFilter = viewModel.ticketFilter.collectAsState()
     val filterDate = viewModel.filterDate.collectAsState()
     val filterLicence = viewModel.filterLicence.collectAsState()
     val filterDriver = viewModel.filterDriver.collectAsState()
+
+    LaunchedEffectKeyed(uiState.value) {
+        if (it.error != null) onError(it.error)
+    }
 
     TopBar(
         title = stringResource(R.string.tickets),
@@ -109,31 +123,38 @@ private fun TicketsScreen(
             shouldShowSortModal.value = !shouldShowSortModal.value
         }
     ) {
-        StickyBottom(
-            modifier = Modifier.fillMaxSize(),
-            stickyBottomContent = {
-                OutlinedButton(onClick = onAddButtonClicked) {
-                    Text(text = stringResource(R.string.add_ticket))
-                }
-            },
-            content = {
-                val tickets = viewModel.tickets.collectAsState()
+        val swipeState = rememberSwipeRefreshState(isRefreshing = uiState.value.status == UiStatus.LOADING)
 
-                LazyColumn {
-                    items(tickets.value) {
-                        TicketItem(
-                            item = it,
-                            onItemClicked = {
-                                onItemClicked(it)
-                            },
-                            onEditClicked = {
-                                onEditClicked(it)
-                            }
-                        )
+        SwipeRefresh(
+            state = swipeState,
+            onRefresh = { viewModel.loadTickets() }
+        ) {
+            StickyBottom(
+                modifier = Modifier.fillMaxSize(),
+                stickyBottomContent = {
+                    OutlinedButton(onClick = onAddButtonClicked) {
+                        Text(text = stringResource(R.string.add_ticket))
+                    }
+                },
+                content = {
+                    val tickets = viewModel.tickets.collectAsState()
+
+                    LazyColumn {
+                        items(tickets.value) {
+                            TicketItem(
+                                item = it,
+                                onItemClicked = {
+                                    onItemClicked(it)
+                                },
+                                onEditClicked = {
+                                    onEditClicked(it)
+                                }
+                            )
+                        }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 
     SortOptionModal(

@@ -31,5 +31,8 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
 
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.firestore)
+
     testImplementation(libs.junit)
 }
