@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
+}
+
 android {
     namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
@@ -21,6 +25,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = TruckTicketAndroidConfig.JVM_TARGET_VERSION
+    }
+    buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
     }
 }
 

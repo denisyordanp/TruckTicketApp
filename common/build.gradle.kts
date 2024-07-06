@@ -7,6 +7,10 @@ plugins {
     id("kotlin-kapt")
 }
 
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
+}
+
 android {
     namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
