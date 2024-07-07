@@ -51,7 +51,7 @@ class RemoteApiImpl @Inject constructor(
             .get(Source.SERVER)
             .addOnSuccessListener { result ->
                 val response =
-                    if (result.exists()) result.toObject(TicketRemote::class.java) else null
+                    if (result.exists()) result.toRemoteTicket() else null
                 coroutine.resume(response)
             }.addOnFailureListener {
                 coroutine.resumeWithException(it)
