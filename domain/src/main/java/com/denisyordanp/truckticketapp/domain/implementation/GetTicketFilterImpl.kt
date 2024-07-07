@@ -18,7 +18,7 @@ class GetTicketFilterImpl @Inject constructor(
 ) : GetTicketFilter {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Suppress("UNCHECKED_CAST")
-    override fun <T> invoke(filter: TicketParam) = repository.getTickets()
+    override fun <T> filter(filter: TicketParam) = repository.getTickets()
         .mapLatest { tickets ->
             when (filter) {
                 TicketParam.DATE -> tickets.distinctBy {

@@ -8,7 +8,6 @@ import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -48,7 +47,7 @@ class GetTicketFilterImplTest {
         whenever(repository.getTickets()).thenReturn(flowOf(tickets))
 
         // When
-        val result = getTicketFilter.invoke<String>(TicketParam.DATE).first()
+        val result = getTicketFilter.filter<String>(TicketParam.DATE).first()
 
         // Then
         verify(repository).getTickets()
@@ -68,7 +67,7 @@ class GetTicketFilterImplTest {
         whenever(repository.getTickets()).thenReturn(flowOf(tickets))
 
         // When
-        val result = getTicketFilter.invoke<String>(TicketParam.DRIVER).first()
+        val result = getTicketFilter.filter<String>(TicketParam.DRIVER).first()
 
         // Then
         verify(repository).getTickets()
@@ -88,7 +87,7 @@ class GetTicketFilterImplTest {
         whenever(repository.getTickets()).thenReturn(flowOf(tickets))
 
         // When
-        val result = getTicketFilter.invoke<String>(TicketParam.LICENSE).first()
+        val result = getTicketFilter.filter<String>(TicketParam.LICENSE).first()
 
         // Then
         verify(repository).getTickets()
