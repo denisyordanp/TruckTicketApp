@@ -28,4 +28,9 @@
             </plugin>
         </plugins>
     </build>
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ../schema/reports/jacoco/testDebugUnitTestCoverage/testDebugUnitTestCoverage.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
 </profile>
