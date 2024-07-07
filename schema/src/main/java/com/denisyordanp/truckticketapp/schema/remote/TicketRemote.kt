@@ -3,7 +3,6 @@ package com.denisyordanp.truckticketapp.schema.remote
 import com.denisyordanp.truckticketapp.common.extension.anyToLong
 import com.denisyordanp.truckticketapp.common.extension.toString
 import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
-import com.google.firebase.firestore.DocumentSnapshot
 
 data class TicketRemote(
     val id: Any?,
@@ -32,20 +31,11 @@ data class TicketRemote(
     )
 
     companion object {
-        private const val ID = "id"
-        private const val LICENCE = "licence"
-        private const val DRIVER = "driver"
-        private const val INBOUND = "inbound"
-        private const val OUTBOUND = "outbound"
-        private const val DATE_TIME = "dateTime"
-
-        fun fromDocument(query: DocumentSnapshot) = TicketRemote(
-            id = query[ID],
-            licence = query[LICENCE],
-            driver = query[DRIVER],
-            inbound = query[INBOUND],
-            outbound = query[OUTBOUND],
-            dateTime = query[DATE_TIME]
-        )
+        const val ID = "id"
+        const val LICENCE = "licence"
+        const val DRIVER = "driver"
+        const val INBOUND = "inbound"
+        const val OUTBOUND = "outbound"
+        const val DATE_TIME = "dateTime"
     }
 }

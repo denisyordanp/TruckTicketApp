@@ -13,19 +13,21 @@ composeBom = "2024.06.00"
 accompanist = "0.23.1"
 coroutine = "1.8.0"
 hilt = "2.49"
-orgJacocoCore = "0.8.8"
 room = "2.5.2"
 ksp = "1.8.10-1.0.9"
 googleService = "4.4.2"
 firebaseBom = "33.1.1"
+mockitoKotlin = "5.3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 kotlin-coroutine = { group = "org.jetbrains.kotlinx", name ="kotlinx-coroutines-android", version.ref = "coroutine" }
+kotlin-coroutine-test = { group = "org.jetbrains.kotlinx", name ="kotlinx-coroutines-test", version.ref = "coroutine" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -54,7 +56,6 @@ dagger-compiler = { group = "com.google.dagger", name ="hilt-compiler", version.
 google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 google-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "orgJacocoCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

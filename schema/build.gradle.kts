@@ -26,11 +26,6 @@ android {
     kotlinOptions {
         jvmTarget = TruckTicketAndroidConfig.JVM_TARGET_VERSION
     }
-    buildTypes {
-        debug {
-            enableUnitTestCoverage = true
-        }
-    }
 }
 
 dependencies {

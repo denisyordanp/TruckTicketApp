@@ -8,9 +8,3 @@ plugins {
     alias(libs.plugins.android.hilt) apply false
     alias(libs.plugins.google.service) apply false
 }
-
-buildscript {
-    dependencies {
-        classpath(libs.jacoco.core)
-    }
-}

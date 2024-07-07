@@ -42,4 +42,6 @@ dependencies {
     kapt(libs.dagger.compiler)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutine.test)
+    testImplementation(libs.mockito.kotlin)
 }
