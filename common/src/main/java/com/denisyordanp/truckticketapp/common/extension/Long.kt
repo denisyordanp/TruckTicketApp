@@ -12,7 +12,7 @@ fun Long.dateFormatToHour(locale: Locale = Locale.getDefault()): Int {
     date.timeInMillis = this
 
     return tryCatchWithDefault(0) {
-        date.get(Calendar.HOUR_OF_DAY)
+        date[Calendar.HOUR_OF_DAY]
     }
 }
 
@@ -21,7 +21,7 @@ fun Long.dateFormatToMinute(locale: Locale = Locale.getDefault()): Int {
     date.timeInMillis = this
 
     return tryCatchWithDefault(0) {
-        date.get(Calendar.MINUTE)
+        date[Calendar.MINUTE]
     }
 }
 

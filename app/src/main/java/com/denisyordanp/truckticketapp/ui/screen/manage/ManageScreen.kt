@@ -193,7 +193,7 @@ private fun ManageContent(
     val isInboundTextError by remember(inboundText) { derivedStateOf { inboundText.isZero() } }
     val isOutboundTextError by remember(outboundText, ticket, inboundText) {
         derivedStateOf {
-            if (ticket != null) outboundText.isZero() || outboundText <= inboundText else false
+            ticket != null && (outboundText.isZero() || outboundText <= inboundText)
         }
     }
     val isSubmitButtonEnabled by remember(

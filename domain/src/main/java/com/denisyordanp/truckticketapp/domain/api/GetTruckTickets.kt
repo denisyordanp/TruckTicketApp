@@ -4,6 +4,6 @@ import com.denisyordanp.truckticketapp.common.util.TicketParam
 import com.denisyordanp.truckticketapp.schema.ui.Ticket
 import kotlinx.coroutines.flow.Flow
 
-interface GetTruckTickets {
+fun interface GetTruckTickets {
     operator fun invoke(sort: TicketParam, filter: Pair<TicketParam, String>?): Flow<List<Ticket>>
 }

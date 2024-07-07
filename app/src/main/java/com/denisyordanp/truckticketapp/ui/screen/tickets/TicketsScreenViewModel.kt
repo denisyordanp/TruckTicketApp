@@ -45,19 +45,19 @@ class TicketsScreenViewModel @Inject constructor(
         emptyList()
     )
 
-    val filterDate = getTicketFilter<Long>(TicketParam.DATE).stateIn(
+    val filterDate = getTicketFilter.invoke<Long>(TicketParam.DATE).stateIn(
         viewModelScope,
         Lazily,
         emptyList()
     )
 
-    val filterLicence = getTicketFilter<String>(TicketParam.LICENSE).stateIn(
+    val filterLicence = getTicketFilter.invoke<String>(TicketParam.LICENSE).stateIn(
         viewModelScope,
         Lazily,
         emptyList()
     )
 
-    val filterDriver = getTicketFilter<String>(TicketParam.DRIVER).stateIn(
+    val filterDriver = getTicketFilter.invoke<String>(TicketParam.DRIVER).stateIn(
         viewModelScope,
         Lazily,
         emptyList()

@@ -1,5 +1,5 @@
 package com.denisyordanp.truckticketapp.domain.api
 
-interface FetchTicketDetail {
+fun interface FetchTicketDetail {
     suspend operator fun invoke(id: Long)
 }

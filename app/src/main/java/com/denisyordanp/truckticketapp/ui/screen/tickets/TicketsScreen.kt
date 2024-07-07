@@ -23,7 +23,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,6 +91,7 @@ fun ticketsRoute(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TicketsScreen(
     viewModel: TicketsScreenViewModel = hiltViewModel(),
@@ -123,7 +123,8 @@ private fun TicketsScreen(
             shouldShowSortModal.value = !shouldShowSortModal.value
         }
     ) {
-        val swipeState = rememberSwipeRefreshState(isRefreshing = uiState.value.status == UiStatus.LOADING)
+        val swipeState =
+            rememberSwipeRefreshState(isRefreshing = uiState.value.status == UiStatus.LOADING)
 
         SwipeRefresh(
             state = swipeState,
@@ -157,24 +158,41 @@ private fun TicketsScreen(
         }
     }
 
-    SortOptionModal(
-        shouldShow = shouldShowSortModal,
-        currentSort = currentSort.value,
-        sortOptions = TicketParam.values(),
-        filterDate = filterDate.value,
-        filterLicence = filterLicence.value,
-        filterDriver = filterDriver.value,
-        selectedFilter = selectedFilter.value,
-        onSelectSort = {
-            viewModel.selectSort(it)
-        },
-        onSelectFilter = {
-            viewModel.selectFilter(it)
-        },
-        onClearFilter = {
-            viewModel.selectFilter(null)
+    if (shouldShowSortModal.value) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                shouldShowSortModal.value = false
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                SortContent(
+                    currentSort = currentSort.value,
+                    sortOptions = TicketParam.values(),
+                    onSelectSort = {
+                        viewModel.selectSort(it)
+                        shouldShowSortModal.value = false
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                FilterContent(
+                    filterDate = filterDate.value,
+                    filterLicence = filterLicence.value,
+                    filterDriver = filterDriver.value,
+                    selectedFilter = selectedFilter.value,
+                    onSelectFilter = {
+                        viewModel.selectFilter(if (it != selectedFilter) it else null)
+                        shouldShowSortModal.value = false
+                    }
+                )
+            }
         }
-    )
+    }
 }
 
 @Composable
@@ -208,57 +226,6 @@ fun TicketItem(
                 imageVector = Icons.Default.Edit,
                 contentDescription = stringResource(R.string.edit)
             )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SortOptionModal(
-    shouldShow: MutableState<Boolean>,
-    currentSort: TicketParam,
-    sortOptions: Array<TicketParam>,
-    filterDate: List<Long>,
-    filterLicence: List<String>,
-    filterDriver: List<String>,
-    selectedFilter: Pair<TicketParam, String>?,
-    onSelectSort: (sort: TicketParam) -> Unit,
-    onSelectFilter: (filter: Pair<TicketParam, String>) -> Unit,
-    onClearFilter: () -> Unit
-) {
-    if (shouldShow.value) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                shouldShow.value = false
-            }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                SortContent(
-                    currentSort = currentSort,
-                    sortOptions = sortOptions,
-                    onSelectSort = {
-                        onSelectSort(it)
-                        shouldShow.value = false
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                FilterContent(
-                    filterDate = filterDate,
-                    filterLicence = filterLicence,
-                    filterDriver = filterDriver,
-                    selectedFilter = selectedFilter,
-                    onSelectFilter = {
-                        if (it != selectedFilter) onSelectFilter(it) else onClearFilter()
-                        shouldShow.value = false
-                    }
-                )
-            }
         }
     }
 }
@@ -384,7 +351,7 @@ private fun FilterContent(
 }
 
 private fun TicketParam?.checkFilter(current: TicketParam, compare: Pair<String, String?>) =
-    if (this == current) compare.first.equals(compare.second, true) else false
+    compare.first.equals(compare.second, true) && this == current
 
 @Composable
 private fun TicketParam.getSortTitle() = when (this) {
