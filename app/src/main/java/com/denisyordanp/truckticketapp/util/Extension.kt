@@ -38,18 +38,3 @@ fun LaunchedEffectOneTime(
         }
     }
 }
-
-suspend fun <T> safeCallWrapper(
-    call: suspend () -> T,
-    onStart: (suspend () -> Unit)? = null,
-    onFinish: (suspend (T) -> Unit)? = null,
-    onError: (suspend (Exception) -> Unit)? = null,
-) {
-    onStart?.invoke()
-    try {
-        val result = call()
-        onFinish?.invoke(result)
-    } catch (e: Exception) {
-        onError?.invoke(e)
-    }
-}

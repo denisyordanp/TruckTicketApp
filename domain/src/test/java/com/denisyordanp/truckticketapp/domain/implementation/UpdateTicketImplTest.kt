@@ -2,7 +2,7 @@ package com.denisyordanp.truckticketapp.domain.implementation
 
 import com.denisyordanp.truckticketapp.data.api.LocalDataRepository
 import com.denisyordanp.truckticketapp.data.api.RemoteRepository
-import com.denisyordanp.truckticketapp.schema.ui.Ticket
+import com.denisyordanp.truckticketapp.test_util.DummyData
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -10,7 +10,6 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import kotlin.random.Random
 
 class UpdateTicketImplTest {
 
@@ -34,7 +33,7 @@ class UpdateTicketImplTest {
     fun `invoke updates ticket in local repository and posts ticket to remote repository`() =
         runTest(testDispatcher) {
             // Given
-            val ticket = Ticket(id = Random.nextLong(), "", "", 0, 0, 0, 0)
+            val ticket = DummyData.createTicket()
 
             // When
             updateTicket.invoke(ticket)

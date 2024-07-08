@@ -17,14 +17,15 @@ project.afterEvaluate {
 }
 
 ext.excludes = [
+        '**/TicketParam.*',
+        '**/DateFormat.*',
         '**/*Test*.*',
-        // kotlin
         '**/Manifest*.*',
         '**/*Module*.*',
         '**/*Dagger*.*',
         '**/*Hilt*.*',
         '**/*MembersInjector*.*',
-        '**/*_MembersInjector.class'
+        '**/*_MembersInjector.class',
 ]
 def createVariantCoverage(variant) {
     def variantName = variant.name

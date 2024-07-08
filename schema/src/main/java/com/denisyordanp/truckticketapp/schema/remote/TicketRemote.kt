@@ -1,7 +1,7 @@
 package com.denisyordanp.truckticketapp.schema.remote
 
 import com.denisyordanp.truckticketapp.common.extension.anyToLong
-import com.denisyordanp.truckticketapp.common.extension.toString
+import com.denisyordanp.truckticketapp.common.extension.anyToString
 import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
 
 data class TicketRemote(
@@ -14,8 +14,8 @@ data class TicketRemote(
 ) {
     fun toTicketEntity() = TicketEntity(
         id = id.anyToLong(),
-        licence = licence.toString(),
-        driver = driver.toString(),
+        licence = licence.anyToString(),
+        driver = driver.anyToString(),
         inbound = inbound.anyToLong(),
         outbound = outbound.anyToLong(),
         dateTime = dateTime.anyToLong()

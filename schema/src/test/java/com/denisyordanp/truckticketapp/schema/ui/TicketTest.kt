@@ -1,5 +1,6 @@
 package com.denisyordanp.truckticketapp.schema.ui
 
+import com.denisyordanp.truckticketapp.test_util.DummyData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import org.junit.Test
@@ -8,15 +9,7 @@ class TicketTest {
 
     @Test
     fun testToTicketEntity() {
-        val ticket = Ticket(
-            id = 1L,
-            licence = "ABC123",
-            driver = "John Doe",
-            inbound = 123456789L,
-            outbound = 987654321L,
-            dateTime = 1234567890L,
-            netWeight = null
-        )
+        val ticket = DummyData.createTicket()
 
         val ticketEntity = ticket.toTicketEntity()
 
@@ -30,15 +23,7 @@ class TicketTest {
 
     @Test
     fun testToTicketRemote() {
-        val ticket = Ticket(
-            id = 1L,
-            licence = "ABC123",
-            driver = "John Doe",
-            inbound = 123456789L,
-            outbound = 987654321L,
-            dateTime = 1234567890L,
-            netWeight = null
-        )
+        val ticket = DummyData.createTicket()
 
         val id = 10L
         val ticketRemote = ticket.toTicketRemote(id)

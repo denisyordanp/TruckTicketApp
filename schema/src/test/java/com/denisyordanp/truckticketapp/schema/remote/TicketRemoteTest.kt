@@ -1,6 +1,7 @@
 package com.denisyordanp.truckticketapp.schema.remote
 
 import com.denisyordanp.truckticketapp.common.extension.anyToLong
+import com.denisyordanp.truckticketapp.test_util.DummyData
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -8,14 +9,7 @@ class TicketRemoteTest {
 
     @Test
     fun testToTicketEntity() {
-        val ticketRemote = TicketRemote(
-            id = 1L,
-            licence = "ABC123",
-            driver = "John Doe",
-            inbound = 123456789L,
-            outbound = 987654321L,
-            dateTime = 1234567890L
-        )
+        val ticketRemote = DummyData.createTicketRemote()
 
         val ticketEntity = ticketRemote.toTicketEntity()
 
@@ -29,14 +23,7 @@ class TicketRemoteTest {
 
     @Test
     fun testToHashMap() {
-        val ticketRemote = TicketRemote(
-            id = 1L,
-            licence = "ABC123",
-            driver = "John Doe",
-            inbound = 123456789L,
-            outbound = 987654321L,
-            dateTime = 1234567890L
-        )
+        val ticketRemote = DummyData.createTicketRemote()
 
         val hashMap = ticketRemote.toHasMap()
 

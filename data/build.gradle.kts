@@ -1,6 +1,7 @@
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
 import com.denisyordanp.truckticketapp.TruckTicketModule
 import com.denisyordanp.truckticketapp.implementModule
+import com.denisyordanp.truckticketapp.testModuleImplement
 
 plugins {
     alias(libs.plugins.android.library)
@@ -8,6 +9,10 @@ plugins {
     alias(libs.plugins.android.hilt)
     alias(libs.plugins.kotlin.ksp)
     id("kotlin-kapt")
+}
+
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
 }
 
 android {
@@ -41,5 +46,8 @@ dependencies {
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.compiler)
 
+    testModuleImplement(TruckTicketModule.TEST_UTIL)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutine.test)
+    testImplementation(libs.mockito.kotlin)
 }

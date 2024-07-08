@@ -27,8 +27,8 @@ class GetTicketFilterImpl @Inject constructor(
                     )
                 }.map { it.dateTime as T }
 
-                TicketParam.DRIVER -> tickets.distinctBy { it.dateTime }.map { it.driver as T }
-                TicketParam.LICENSE -> tickets.distinctBy { it.dateTime }.map { it.licence as T }
+                TicketParam.DRIVER -> tickets.distinctBy { it.driver }.map { it.driver as T }
+                TicketParam.LICENSE -> tickets.distinctBy { it.licence }.map { it.licence as T }
             }.take(5)
         }.flowOn(dispatcher)
 }

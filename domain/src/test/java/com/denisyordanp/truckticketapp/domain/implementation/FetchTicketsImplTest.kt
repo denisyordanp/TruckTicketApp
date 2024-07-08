@@ -2,7 +2,7 @@ package com.denisyordanp.truckticketapp.domain.implementation
 
 import com.denisyordanp.truckticketapp.data.api.LocalDataRepository
 import com.denisyordanp.truckticketapp.data.api.RemoteRepository
-import com.denisyordanp.truckticketapp.schema.remote.TicketRemote
+import com.denisyordanp.truckticketapp.test_util.DummyData
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -11,7 +11,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import kotlin.random.Random
 
 class FetchTicketsImplTest {
     @Mock
@@ -35,8 +34,8 @@ class FetchTicketsImplTest {
         runTest(testDispatcher) {
             // Given
             val remoteTickets = listOf(
-                TicketRemote(id = Random.nextLong(), "", "", 0, 0, 0),
-                TicketRemote(id = Random.nextLong(), "", "", 0, 0, 0)
+                DummyData.createTicketRemote(),
+                DummyData.createTicketRemote()
             )
             val localTickets = remoteTickets.map { it.toTicketEntity() }
 

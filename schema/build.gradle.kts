@@ -1,6 +1,7 @@
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
 import com.denisyordanp.truckticketapp.TruckTicketModule
 import com.denisyordanp.truckticketapp.implementModule
+import com.denisyordanp.truckticketapp.testModuleImplement
 
 plugins {
     alias(libs.plugins.android.library)
@@ -38,5 +39,6 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.firestore)
 
+    testModuleImplement(TruckTicketModule.TEST_UTIL)
     testImplementation(libs.junit)
 }

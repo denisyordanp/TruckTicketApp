@@ -2,7 +2,7 @@ package com.denisyordanp.truckticketapp.domain.implementation
 
 import com.denisyordanp.truckticketapp.data.api.LocalDataRepository
 import com.denisyordanp.truckticketapp.data.api.RemoteRepository
-import com.denisyordanp.truckticketapp.schema.ui.Ticket
+import com.denisyordanp.truckticketapp.test_util.DummyData
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -35,7 +35,7 @@ class AddNewTicketImplTest {
         runTest(testDispatcher) {
             // Given
             val ticketId = Random.nextLong()
-            val ticket = Ticket(id = ticketId, "", "", 0, 0, 0, 0)
+            val ticket = DummyData.createTicket()
             val ticketEntity = ticket.toTicketEntity()
             val remoteTicket = ticket.toTicketRemote(ticketId)
 

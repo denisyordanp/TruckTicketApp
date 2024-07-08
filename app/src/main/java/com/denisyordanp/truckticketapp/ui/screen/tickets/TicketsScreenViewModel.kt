@@ -3,12 +3,12 @@ package com.denisyordanp.truckticketapp.ui.screen.tickets
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denisyordanp.truckticketapp.common.extension.pairOf
+import com.denisyordanp.truckticketapp.common.extension.safeCallWrapper
 import com.denisyordanp.truckticketapp.common.util.TicketParam
 import com.denisyordanp.truckticketapp.domain.api.FetchTickets
 import com.denisyordanp.truckticketapp.domain.api.GetTicketFilter
 import com.denisyordanp.truckticketapp.domain.api.GetTruckTickets
 import com.denisyordanp.truckticketapp.util.UiState
-import com.denisyordanp.truckticketapp.util.safeCallWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

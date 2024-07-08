@@ -2,7 +2,7 @@ package com.denisyordanp.truckticketapp.domain.implementation
 
 import com.denisyordanp.truckticketapp.data.api.LocalDataRepository
 import com.denisyordanp.truckticketapp.data.api.RemoteRepository
-import com.denisyordanp.truckticketapp.schema.remote.TicketRemote
+import com.denisyordanp.truckticketapp.test_util.DummyData
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -33,34 +33,36 @@ class FetchTicketDetailImplTest {
     }
 
     @Test
-    fun `invoke fetches ticket detail from remote and inserts into local repository`() = runTest(testDispatcher) {
-        // Given
-        val ticketId = Random.nextLong()
-        val ticketRemote = TicketRemote(id = ticketId, "", "", 0, 0, 0)
-        val ticketEntity = ticketRemote.toTicketEntity()
+    fun `invoke fetches ticket detail from remote and inserts into local repository`() =
+        runTest(testDispatcher) {
+            // Given
+            val ticketId = Random.nextLong()
+            val ticketRemote = DummyData.createTicketRemote(ticketId)
+            val ticketEntity = ticketRemote.toTicketEntity()
 
-        whenever(remoteRepository.fetchTicketDetail(ticketId)).thenReturn(ticketRemote)
+            whenever(remoteRepository.fetchTicketDetail(ticketId)).thenReturn(ticketRemote)
 
-        // When
-        fetchTicketDetail.invoke(ticketId)
+            // When
+            fetchTicketDetail.invoke(ticketId)
 
-        // Then
-        verify(remoteRepository).fetchTicketDetail(ticketId)
-        verify(localRepository).insertTicket(ticketEntity)
-    }
+            // Then
+            verify(remoteRepository).fetchTicketDetail(ticketId)
+            verify(localRepository).insertTicket(ticketEntity)
+        }
 
     @Test
-    fun `invoke does not insert null ticket detail into local repository`() = runTest(testDispatcher) {
-        // Given
-        val ticketId = Random.nextLong()
+    fun `invoke does not insert null ticket detail into local repository`() =
+        runTest(testDispatcher) {
+            // Given
+            val ticketId = Random.nextLong()
 
-        whenever(remoteRepository.fetchTicketDetail(ticketId)).thenReturn(null)
+            whenever(remoteRepository.fetchTicketDetail(ticketId)).thenReturn(null)
 
-        // When
-        fetchTicketDetail.invoke(ticketId)
+            // When
+            fetchTicketDetail.invoke(ticketId)
 
-        // Then
-        verify(remoteRepository).fetchTicketDetail(ticketId)
-        verify(localRepository, never()).insertTicket(any())
-    }
+            // Then
+            verify(remoteRepository).fetchTicketDetail(ticketId)
+            verify(localRepository, never()).insertTicket(any())
+        }
 }
