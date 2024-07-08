@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalDataRepositoryImpl.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">data</a> &gt; <a href="index.source.html" class="el_package">com.denisyordanp.truckticketapp.data.implementation</a> &gt; <span class="el_source">LocalDataRepositoryImpl.kt</span></div><h1>LocalDataRepositoryImpl.kt</h1><pre class="source lang-java linenums">package com.denisyordanp.truckticketapp.data.implementation
+
+import com.denisyordanp.truckticketapp.common.di.DefaultDispatcher
+import com.denisyordanp.truckticketapp.core.database.dao.TicketsDao
+import com.denisyordanp.truckticketapp.data.api.LocalDataRepository
+import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+<span class="fc" id="L12">class LocalDataRepositoryImpl @Inject constructor(</span>
+<span class="fc" id="L13">    private val dao: TicketsDao,</span>
+<span class="fc" id="L14">    @DefaultDispatcher private val dispatcher: CoroutineDispatcher</span>
+) : LocalDataRepository {
+<span class="fc" id="L16">    override fun getTickets() = dao.getTickets().flowOn(dispatcher)</span>
+<span class="fc" id="L17">    override fun getTicketDetail(id: Long) = dao.getTicketDetail(id).flowOn(dispatcher)</span>
+
+<span class="fc" id="L19">    override suspend fun insertTicket(ticket: TicketEntity) = withContext(dispatcher) {</span>
+<span class="fc" id="L20">        dao.upsertTicket(ticket)</span>
+<span class="fc" id="L21">    }</span>
+
+    override suspend fun insertTickets(tickets: List&lt;TicketEntity&gt;) {
+<span class="fc" id="L24">        dao.upsertTickets(tickets)</span>
+<span class="fc" id="L25">    }</span>
+
+<span class="fc" id="L27">    override suspend fun updateTicket(ticket: TicketEntity) = withContext(dispatcher) {</span>
+<span class="fc" id="L28">        dao.upsertTicket(ticket)</span>
+<span class="fc" id="L29">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ticket.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">schema</a> &gt; <a href="index.source.html" class="el_package">com.denisyordanp.truckticketapp.schema.ui</a> &gt; <span class="el_source">Ticket.kt</span></div><h1>Ticket.kt</h1><pre class="source lang-java linenums">package com.denisyordanp.truckticketapp.schema.ui
+
+import com.denisyordanp.truckticketapp.schema.entity.TicketEntity
+import com.denisyordanp.truckticketapp.schema.remote.TicketRemote
+
+<span class="fc" id="L6">data class Ticket(</span>
+<span class="fc" id="L7">    val id: Long,</span>
+<span class="fc" id="L8">    val licence: String,</span>
+<span class="fc" id="L9">    val driver: String,</span>
+<span class="fc" id="L10">    val inbound: Long,</span>
+<span class="fc" id="L11">    val outbound: Long?,</span>
+<span class="fc" id="L12">    val dateTime: Long,</span>
+<span class="fc" id="L13">    val netWeight: Long?</span>
+) {
+<span class="fc" id="L15">    fun toTicketEntity() = TicketEntity(</span>
+<span class="fc" id="L16">        id = id,</span>
+<span class="fc" id="L17">        licence = licence,</span>
+<span class="fc" id="L18">        driver = driver,</span>
+<span class="fc" id="L19">        inbound = inbound,</span>
+<span class="fc" id="L20">        outbound = outbound,</span>
+<span class="fc" id="L21">        dateTime = dateTime</span>
+<span class="fc" id="L22">    )</span>
+
+<span class="fc" id="L24">    fun toTicketRemote(id: Long) = TicketRemote(</span>
+<span class="fc" id="L25">        id = id,</span>
+<span class="fc" id="L26">        licence = licence,</span>
+<span class="fc" id="L27">        driver = driver,</span>
+<span class="fc" id="L28">        inbound = inbound,</span>
+<span class="fc" id="L29">        outbound = outbound,</span>
+<span class="fc" id="L30">        dateTime = dateTime</span>
+<span class="fc" id="L31">    )</span>
+
+    companion object {
+        fun newTicket(
+            licence: String,
+            driver: String,
+            inbound: Long,
+            dateTime: Long
+<span class="fc" id="L39">        ) = Ticket(</span>
+<span class="fc" id="L40">            id = 0L,</span>
+<span class="fc" id="L41">            licence = licence,</span>
+<span class="fc" id="L42">            driver = driver,</span>
+<span class="fc" id="L43">            inbound = inbound,</span>
+<span class="fc" id="L44">            outbound = null,</span>
+<span class="fc" id="L45">            dateTime = dateTime,</span>
+<span class="fc" id="L46">            netWeight = null</span>
+<span class="fc" id="L47">        )</span>
+
+        fun existingTicket(
+            id: Long,
+            licence: String,
+            driver: String,
+            inbound: Long,
+            outbound: Long,
+            dateTime: Long
+<span class="fc" id="L56">        ) = Ticket(</span>
+<span class="fc" id="L57">            id = id,</span>
+<span class="fc" id="L58">            licence = licence,</span>
+<span class="fc" id="L59">            driver = driver,</span>
+<span class="fc" id="L60">            inbound = inbound,</span>
+<span class="fc" id="L61">            outbound = outbound,</span>
+<span class="fc" id="L62">            dateTime = dateTime,</span>
+<span class="fc" id="L63">            netWeight = null</span>
+<span class="fc" id="L64">        )</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

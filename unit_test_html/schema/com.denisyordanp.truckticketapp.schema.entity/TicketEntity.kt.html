@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TicketEntity.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">schema</a> &gt; <a href="index.source.html" class="el_package">com.denisyordanp.truckticketapp.schema.entity</a> &gt; <span class="el_source">TicketEntity.kt</span></div><h1>TicketEntity.kt</h1><pre class="source lang-java linenums">package com.denisyordanp.truckticketapp.schema.entity
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.denisyordanp.truckticketapp.common.extension.orZero
+import com.denisyordanp.truckticketapp.schema.ui.Ticket
+
+<span class="fc" id="L9">@Entity(tableName = TicketEntity.TABLE_NAME)</span>
+<span class="fc" id="L10">data class TicketEntity(</span>
+<span class="fc" id="L11">    @PrimaryKey(autoGenerate = true)</span>
+    @ColumnInfo(ID_COLUMN)
+<span class="fc" id="L13">    val id: Long,</span>
+
+<span class="fc" id="L15">    @ColumnInfo(LICENCE_COLUMN)</span>
+<span class="fc" id="L16">    val licence: String,</span>
+
+<span class="fc" id="L18">    @ColumnInfo(DRIVE_COLUMN)</span>
+<span class="fc" id="L19">    val driver: String,</span>
+
+<span class="fc" id="L21">    @ColumnInfo(INBOUND_COLUMN)</span>
+<span class="fc" id="L22">    val inbound: Long,</span>
+
+<span class="fc" id="L24">    @ColumnInfo(OUTBOUND_COLUMN)</span>
+<span class="fc" id="L25">    val outbound: Long?,</span>
+
+<span class="fc" id="L27">    @ColumnInfo(DATE_TIME_COLUMN)</span>
+<span class="fc" id="L28">    val dateTime: Long</span>
+) {
+    companion object {
+        const val TABLE_NAME = &quot;ticket&quot;
+        const val ID_COLUMN = &quot;id&quot;
+        const val LICENCE_COLUMN = &quot;licence&quot;
+        const val DRIVE_COLUMN = &quot;driver&quot;
+        const val INBOUND_COLUMN = &quot;inbound&quot;
+        const val OUTBOUND_COLUMN = &quot;outbound&quot;
+        const val DATE_TIME_COLUMN = &quot;date_time&quot;
+    }
+
+<span class="fc" id="L40">    fun toTicket() = Ticket(</span>
+<span class="fc" id="L41">        id = id,</span>
+<span class="fc" id="L42">        licence = licence,</span>
+<span class="fc" id="L43">        driver = driver,</span>
+<span class="fc" id="L44">        inbound = inbound,</span>
+<span class="fc" id="L45">        outbound = outbound,</span>
+<span class="fc" id="L46">        dateTime = dateTime,</span>
+<span class="fc" id="L47">        netWeight = outbound.orZero().minus(inbound)</span>
+<span class="fc" id="L48">    )</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
