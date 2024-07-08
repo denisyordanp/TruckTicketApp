@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.kotlin.ksp) apply false
     alias(libs.plugins.android.hilt) apply false
     alias(libs.plugins.google.service) apply false
+    alias(libs.plugins.sonarqube) apply false
 }
