@@ -10,6 +10,10 @@ plugins {
     id("kotlin-kapt")
 }
 
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
+}
+
 android {
     namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
@@ -43,6 +47,4 @@ dependencies {
 
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.firestore)
-
-    testImplementation(libs.junit)
 }

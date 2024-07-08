@@ -10,6 +10,10 @@ plugins {
     id("kotlin-kapt")
 }
 
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
+}
+
 android {
     namespace = TruckTicketAndroidConfig.NAMESPACE
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
