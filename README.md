@@ -4,7 +4,7 @@
 Truck Ticket App is app that records truck’s inbound and outbound weight through weighbridge.
 
 ## How to run
-- Make sure you already set `$JAVA_HOME` with JDK **17.*.*** version. (you can run `echo $JAVA_HOME` in your terminal)
+- Make sure you already set `$JAVA_HOME` with JDK **17.x.x** version to be able run the `./gradlew` command. (you can check by running `echo $JAVA_HOME` in your terminal, if it's empty please search through the internet "How to setup JAVA_HOME in Mac/Windows/Ubuntu")
 - You can run `./gradlew test` to **only** run unit tests and generate the coverage report that will generated in the `/build/reports/jacoco/testDebugUnitTestCoverage/` in each module. (except `core` and `app`)
 - Or also you can tun `./gradlew build` that will build the project alongside with the `./gradlew test` in the end.
 
@@ -22,9 +22,7 @@ Truck Ticket App is app that records truck’s inbound and outbound weight throu
   - Test Double: Mockito
 
 ## Demo
-| Description                                                                          |
-|--------------------------------------------------------------------------------------|
-|  |
+https://github.com/denisyordanp/TruckTicketApp/assets/48426396/4a2afa96-8a73-4c57-8fa8-4095da2d6f29
 
 ## Unit Test Coverage
 **Note**: If you want to explore the coverage, you can download the folder for each module in the given link below then open the _index.html_ in the browser.
