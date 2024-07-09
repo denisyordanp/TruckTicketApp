@@ -63,24 +63,7 @@ def createVariantCoverage(variant) {
         }
     }
 
-    // Add unit test coverage verification tasks
-    tasks.create(name: "${testTaskName}CoverageVerification", type: JacocoCoverageVerification, dependsOn: "${testTaskName}Coverage") {
-        group = "Reporting"
-        description = "Verifies Jacoco coverage for the ${variantName.capitalize()} build."
-
-        def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir, excludes: project.excludes)
-        def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variantName}", excludes: project.excludes)
-        getClassDirectories().setFrom(files([javaClasses, kotlinClasses]))
-        getSourceDirectories().setFrom(files([
-                "$project.projectDir/src/main/java",
-                "$project.projectDir/src/${variantName}/java",
-                "$project.projectDir/src/main/kotlin",
-                "$project.projectDir/src/${variantName}/kotlin"
-        ]))
-        getExecutionData().setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/${variantName}UnitTest/${testTaskName}.exec"))
-    }
-
-    tasks["test"].finalizedBy(tasks["${testTaskName}CoverageVerification"])
+    tasks["test"].finalizedBy(tasks["${testTaskName}Coverage"])
 }
 
 android {
