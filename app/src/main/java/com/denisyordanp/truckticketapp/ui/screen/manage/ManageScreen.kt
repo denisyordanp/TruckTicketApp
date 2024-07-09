@@ -163,7 +163,6 @@ private fun ManageScreen(
         }
     )
 
-    // TODO: Fix time picker initial value
     TimePickerDialog(
         shouldShowPicker = shouldShowTimePicker,
         selectedTime = selectedTime,
