@@ -27,6 +27,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/schema" />
+            <option value="$PROJECT_DIR$/test_util" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
