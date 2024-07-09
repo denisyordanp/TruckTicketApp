@@ -1,7 +1,8 @@
 # Truck Ticket App
 
 ## Description
-Truck Ticket App is app that records truck’s inbound and outbound weight through weighbridge.
+Truck Ticket App is app that records truck’s inbound and outbound weight through weighbridge. <br><br>
+(Note: For now, because of the **tight deadline**. The focus of this project is the overall **Technical Design**. So the **UI design** only shows the content, not a beautiful **UI design**.)
 
 ## How to run
 - Make sure you already set `$JAVA_HOME` with JDK **17.x.x** version to be able run the `./gradlew` command. (you can check by running `echo $JAVA_HOME` in your terminal, if it's empty please search through the internet "How to setup JAVA_HOME in Mac/Windows/Ubuntu")
