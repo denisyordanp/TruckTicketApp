@@ -11,10 +11,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-apply {
-    from("${project.rootDir.path}/jacoco.gradle")
-}
-
 android {
     namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
@@ -50,4 +46,10 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutine.test)
     testImplementation(libs.mockito.kotlin)
+}
+
+sonar {
+    properties {
+        property("sonar.branch.name", "data")
+    }
 }

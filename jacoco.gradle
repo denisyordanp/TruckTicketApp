@@ -1,9 +1,0 @@
-apply plugin: "org.sonarqube"
-
-sonar {
-    properties {
-        property "sonar.projectKey", "denisyordanp_TruckTicketApp"
-        property "sonar.organization", "denisyordanp"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
-}

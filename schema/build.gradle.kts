@@ -8,10 +8,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
-apply {
-    from("${project.rootDir.path}/jacoco.gradle")
-}
-
 android {
     namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
@@ -41,4 +37,10 @@ dependencies {
 
     testModuleImplement(TruckTicketModule.TEST_UTIL)
     testImplementation(libs.junit)
+}
+
+sonar {
+    properties {
+        property("sonar.branch.name", "schema")
+    }
 }

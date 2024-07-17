@@ -10,10 +10,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-apply {
-    from("${project.rootDir.path}/jacoco.gradle")
-}
-
 android {
     namespace = TruckTicketAndroidConfig.NAMESPACE
     compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
@@ -32,6 +28,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -88,4 +87,10 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+sonar {
+    properties {
+        property("sonar.branch.name", "app")
+    }
 }
