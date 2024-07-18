@@ -1,14 +1,12 @@
+import com.denisyordanp.truckticketapp.SonarConfig
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
+import com.denisyordanp.truckticketapp.TruckTicketModule
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.android.hilt)
     id("kotlin-kapt")
-}
-
-apply {
-    from("${project.rootDir.path}/jacoco.gradle")
 }
 
 android {
@@ -26,6 +24,7 @@ android {
     kotlinOptions {
         jvmTarget = TruckTicketAndroidConfig.JVM_TARGET_VERSION
     }
+    testOptions.unitTests.isReturnDefaultValues = true
 }
 
 dependencies {
@@ -37,4 +36,15 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutine.test)
+}
+
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
+}
+
+sonar {
+    properties {
+        property(SonarConfig.SONAR_BRANCH, TruckTicketModule.COMMON.moduleName)
+        property(SonarConfig.SONAR_COVERAGE_XML_REPORT, SonarConfig.getJacocoTestReportPath(project.buildDir))
+    }
 }

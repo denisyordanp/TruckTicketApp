@@ -1,5 +1,3 @@
-
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
@@ -7,4 +5,24 @@ plugins {
     alias(libs.plugins.kotlin.ksp) apply false
     alias(libs.plugins.android.hilt) apply false
     alias(libs.plugins.google.service) apply false
+    alias(libs.plugins.sonarqube) apply true
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "denisyordanp_TruckTicketApp")
+        property("sonar.organization", "denisyordanp")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
+subprojects {
+    apply(plugin = "org.sonarqube")
+
+    sonar {
+        properties {
+            property("sonar.sources", "src/main")
+            property("sonar.tests", "src/test")
+        }
+    }
 }

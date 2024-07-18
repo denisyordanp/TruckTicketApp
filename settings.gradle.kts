@@ -10,6 +10,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -19,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Truck Ticket App"
+rootProject.name = "TruckTicketApp"
 include(":app")
 include(":core")
 include(":data")

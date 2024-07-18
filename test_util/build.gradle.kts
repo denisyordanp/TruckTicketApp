@@ -29,3 +29,9 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
 }
+
+sonar {
+    properties {
+        isSkipProject = true
+    }
+}
