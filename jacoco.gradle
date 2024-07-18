@@ -1,0 +1,49 @@
+apply plugin: "jacoco"
+
+project.afterEvaluate {
+    createJacocoTestReport()
+}
+
+ext.excludes = [
+        '**/TicketParam.*',
+        '**/DateFormat.*',
+        '**/*Test*.*',
+        '**/Manifest*.*',
+        '**/*Module*.*',
+        '**/*Dagger*.*',
+        '**/*Hilt*.*',
+        '**/*MembersInjector*.*',
+        '**/*_MembersInjector.class',
+]
+
+def createJacocoTestReport() {
+    // Add unit test coverage tasks
+    tasks.create(name: "jacocoTestReport", type: JacocoReport, dependsOn: "testDebugUnitTest") {
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports for the Debug build."
+
+        reports {
+            html.required.set(false)
+            csv.required.set(false)
+            xml.required.set(true)
+        }
+
+        def javaClasses = fileTree(dir: "${project.buildDir}/intermediates/javac/debug/classes", excludes: project.excludes)
+        def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: project.excludes)
+        getClassDirectories().setFrom(files([javaClasses, kotlinClasses]))
+
+        getSourceDirectories().setFrom(file("$project.projectDir/src/main/java"))
+
+        getExecutionData().setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"))
+    }
+
+    tasks["test"].finalizedBy(tasks["jacocoTestReport"])
+}
+
+android {
+    buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
+    }
+}

@@ -1,4 +1,6 @@
+import com.denisyordanp.truckticketapp.SonarConfig
 import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
+import com.denisyordanp.truckticketapp.TruckTicketModule
 
 plugins {
     alias(libs.plugins.android.library)
@@ -36,8 +38,13 @@ dependencies {
     testImplementation(libs.kotlin.coroutine.test)
 }
 
+apply {
+    from("${project.rootDir.path}/jacoco.gradle")
+}
+
 sonar {
     properties {
-        property("sonar.branch.name", "common")
+        property(SonarConfig.SONAR_BRANCH, TruckTicketModule.COMMON.moduleName)
+        property(SonarConfig.SONAR_COVERAGE_XML_REPORT, SonarConfig.getJacocoTestReportPath(project.buildDir))
     }
 }

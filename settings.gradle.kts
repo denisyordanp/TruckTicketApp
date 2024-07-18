@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Truck Ticket App"
+rootProject.name = "TruckTicketApp"
 include(":app")
 include(":core")
 include(":data")
