@@ -1,5 +1,5 @@
+import com.denisyordanp.truckticketapp.AppConfig
 import com.denisyordanp.truckticketapp.SonarConfig
-import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
 import com.denisyordanp.truckticketapp.TruckTicketModule
 import com.denisyordanp.truckticketapp.implementModule
 
@@ -12,19 +12,19 @@ plugins {
 }
 
 android {
-    namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
-    compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
+    namespace = AppConfig.Android.createModuleNameSpace(project.path)
+    compileSdk = AppConfig.Android.COMPILE_SDK
 
     defaultConfig {
-        minSdk = TruckTicketAndroidConfig.MIN_SDK
+        minSdk = AppConfig.Android.MIN_SDK
     }
 
     compileOptions {
-        sourceCompatibility = TruckTicketAndroidConfig.COMPATIBILITY_VERSION
-        targetCompatibility = TruckTicketAndroidConfig.COMPATIBILITY_VERSION
+        sourceCompatibility = AppConfig.Android.COMPATIBILITY_VERSION
+        targetCompatibility = AppConfig.Android.COMPATIBILITY_VERSION
     }
     kotlinOptions {
-        jvmTarget = TruckTicketAndroidConfig.JVM_TARGET_VERSION
+        jvmTarget = AppConfig.Android.JVM_TARGET_VERSION
     }
 }
 
@@ -44,6 +44,8 @@ dependencies {
 
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.firestore)
+
+    testImplementation(libs.junit)
 }
 
 apply {
@@ -52,7 +54,8 @@ apply {
 
 sonar {
     properties {
-        property(SonarConfig.SONAR_BRANCH, TruckTicketModule.CORE.moduleName)
-        property(SonarConfig.SONAR_COVERAGE_XML_REPORT, SonarConfig.getJacocoTestReportPath(project.buildDir))
+        property(SonarConfig.BRANCH_NAME, TruckTicketModule.CORE.moduleName)
+        property(SonarConfig.LINT_REPORT_PATH, AppConfig.Report.getLintReportPath(project.buildDir))
+        property(SonarConfig.COVERAGE_EXCLUSIONS, AppConfig.Report.CORE_COVERAGE_EXCLUSION)
     }
 }

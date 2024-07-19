@@ -3,8 +3,10 @@ package com.denisyordanp.truckticketapp
 import java.io.File
 
 object SonarConfig {
-    const val SONAR_BRANCH = "sonar.branch.name"
-    const val SONAR_COVERAGE_XML_REPORT = "sonar.coverage.jacoco.xmlReportPaths"
-
-    fun getJacocoTestReportPath(file: File) = "${file}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+    const val BRANCH_NAME = "sonar.branch.name"
+    const val COVERAGE_JACOCO_XML_PATH = "sonar.coverage.jacoco.xmlReportPaths"
+    const val SOURCES_PATH = "sonar.sources"
+    const val TESTS_PATH = "sonar.tests"
+    const val LINT_REPORT_PATH = "sonar.androidLint.reportPaths"
+    const val COVERAGE_EXCLUSIONS = "sonar.coverage.exclusions"
 }

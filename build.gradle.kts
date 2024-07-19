@@ -13,16 +13,6 @@ sonar {
         property("sonar.projectKey", "denisyordanp_TruckTicketApp")
         property("sonar.organization", "denisyordanp")
         property("sonar.host.url", "https://sonarcloud.io")
-    }
-}
-
-subprojects {
-    apply(plugin = "org.sonarqube")
-
-    sonar {
-        properties {
-            property("sonar.sources", "src/main")
-            property("sonar.tests", "src/test")
-        }
+        property("sonar.exclusions", "**/test_util/**")
     }
 }

@@ -1,5 +1,5 @@
+import com.denisyordanp.truckticketapp.AppConfig
 import com.denisyordanp.truckticketapp.SonarConfig
-import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
 import com.denisyordanp.truckticketapp.TruckTicketModule
 
 plugins {
@@ -10,19 +10,19 @@ plugins {
 }
 
 android {
-    namespace = TruckTicketAndroidConfig.createModuleNameSpace(project.path)
-    compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
+    namespace = AppConfig.Android.createModuleNameSpace(project.path)
+    compileSdk = AppConfig.Android.COMPILE_SDK
 
     defaultConfig {
-        minSdk = TruckTicketAndroidConfig.MIN_SDK
+        minSdk = AppConfig.Android.MIN_SDK
     }
 
     compileOptions {
-        sourceCompatibility = TruckTicketAndroidConfig.COMPATIBILITY_VERSION
-        targetCompatibility = TruckTicketAndroidConfig.COMPATIBILITY_VERSION
+        sourceCompatibility = AppConfig.Android.COMPATIBILITY_VERSION
+        targetCompatibility = AppConfig.Android.COMPATIBILITY_VERSION
     }
     kotlinOptions {
-        jvmTarget = TruckTicketAndroidConfig.JVM_TARGET_VERSION
+        jvmTarget = AppConfig.Android.JVM_TARGET_VERSION
     }
     testOptions.unitTests.isReturnDefaultValues = true
 }
@@ -44,7 +44,13 @@ apply {
 
 sonar {
     properties {
-        property(SonarConfig.SONAR_BRANCH, TruckTicketModule.COMMON.moduleName)
-        property(SonarConfig.SONAR_COVERAGE_XML_REPORT, SonarConfig.getJacocoTestReportPath(project.buildDir))
+        property(SonarConfig.BRANCH_NAME, TruckTicketModule.COMMON.moduleName)
+        property(
+            SonarConfig.COVERAGE_JACOCO_XML_PATH,
+            AppConfig.Report.getJacocoTestReportPath(project.buildDir)
+        )
+        property(SonarConfig.LINT_REPORT_PATH, AppConfig.Report.getLintReportPath(project.buildDir))
+        property(SonarConfig.SOURCES_PATH, AppConfig.Source.MAIN_PATH)
+        property(SonarConfig.TESTS_PATH, AppConfig.Source.TESTS_PATH)
     }
 }
