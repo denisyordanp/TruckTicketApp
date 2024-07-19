@@ -1,5 +1,4 @@
 import com.denisyordanp.truckticketapp.AppConfig
-import com.denisyordanp.truckticketapp.SonarConfig
 import com.denisyordanp.truckticketapp.TruckTicketModule
 import com.denisyordanp.truckticketapp.implementModule
 
@@ -50,12 +49,4 @@ dependencies {
 
 apply {
     from("${project.rootDir.path}/jacoco.gradle")
-}
-
-sonar {
-    properties {
-        property(SonarConfig.BRANCH_NAME, TruckTicketModule.CORE.moduleName)
-        property(SonarConfig.LINT_REPORT_PATH, AppConfig.Report.getLintReportPath(project.buildDir))
-        property(SonarConfig.COVERAGE_EXCLUSIONS, AppConfig.Report.CORE_COVERAGE_EXCLUSION)
-    }
 }

@@ -1,7 +1,6 @@
 package com.denisyordanp.truckticketapp
 
 import org.gradle.api.JavaVersion
-import java.io.File
 
 object AppConfig {
     object Android {
@@ -18,20 +17,8 @@ object AppConfig {
         const val JVM_TARGET_VERSION = "17"
         val COMPATIBILITY_VERSION = JavaVersion.VERSION_17
 
-        fun createModuleNameSpace(path: String) = "${Android.NAMESPACE}.${path.removePrefix(":").replace(":", ".")}"
-    }
-
-    object Source {
-        const val MAIN_PATH = "src/main"
-        const val TESTS_PATH = "src/test"
-    }
-
-    object Report {
-        const val CORE_COVERAGE_EXCLUSION = "**/database/**, **/remote/**"
-        const val APP_COVERAGE_EXCLUSION = "**/ui/**, **/util/**"
-
-        fun getJacocoTestReportPath(file: File) = "${file}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
-        fun getLintReportPath(file: File) = "${file}/reports/lint-results-debug.xml"
+        fun createModuleNameSpace(path: String) =
+            "$NAMESPACE.${path.removePrefix(":").replace(":", ".")}"
     }
 }
 
