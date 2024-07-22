@@ -1,5 +1,4 @@
-import com.denisyordanp.truckticketapp.SonarConfig
-import com.denisyordanp.truckticketapp.TruckTicketAndroidConfig
+import com.denisyordanp.truckticketapp.AppConfig
 import com.denisyordanp.truckticketapp.TruckTicketModule
 import com.denisyordanp.truckticketapp.implementModule
 
@@ -12,15 +11,15 @@ plugins {
 }
 
 android {
-    namespace = TruckTicketAndroidConfig.NAMESPACE
-    compileSdk = TruckTicketAndroidConfig.COMPILE_SDK
+    namespace = AppConfig.Android.NAMESPACE
+    compileSdk = AppConfig.Android.COMPILE_SDK
 
     defaultConfig {
-        applicationId = TruckTicketAndroidConfig.NAMESPACE
-        minSdk = TruckTicketAndroidConfig.MIN_SDK
-        targetSdk = TruckTicketAndroidConfig.TARGET_SDK
-        versionCode = TruckTicketAndroidConfig.VERSION_CODE
-        versionName = TruckTicketAndroidConfig.VERSION_NAME
+        applicationId = AppConfig.Android.NAMESPACE
+        minSdk = AppConfig.Android.MIN_SDK
+        targetSdk = AppConfig.Android.TARGET_SDK
+        versionCode = AppConfig.Android.VERSION_CODE
+        versionName = AppConfig.Android.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -38,17 +37,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = TruckTicketAndroidConfig.COMPATIBILITY_VERSION
-        targetCompatibility = TruckTicketAndroidConfig.COMPATIBILITY_VERSION
+        sourceCompatibility = AppConfig.Android.COMPATIBILITY_VERSION
+        targetCompatibility = AppConfig.Android.COMPATIBILITY_VERSION
     }
     kotlinOptions {
-        jvmTarget = TruckTicketAndroidConfig.JVM_TARGET_VERSION
+        jvmTarget = AppConfig.Android.JVM_TARGET_VERSION
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = TruckTicketAndroidConfig.COMPOSE_COMPILER_VERSION
+        kotlinCompilerExtensionVersion = AppConfig.Android.COMPOSE_COMPILER_VERSION
     }
     packaging {
         resources {
@@ -85,15 +84,10 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    testImplementation(libs.junit)
 }
 
 apply {
     from("${project.rootDir.path}/jacoco.gradle")
-}
-
-sonar {
-    properties {
-        property(SonarConfig.SONAR_BRANCH, TruckTicketModule.APP.moduleName)
-        property(SonarConfig.SONAR_COVERAGE_XML_REPORT, SonarConfig.getJacocoTestReportPath(project.buildDir))
-    }
 }

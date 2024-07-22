@@ -1,7 +1,19 @@
 apply plugin: "jacoco"
 
 project.afterEvaluate {
-    createJacocoTestReport()
+    if (android.hasProperty("applicationVariants")) {
+        android.applicationVariants.all { variant ->
+            if (variant.name == "debug") {
+                createJacocoTestReport()
+            }
+        }
+    } else if (android.hasProperty("libraryVariants")) {
+        android.libraryVariants.all { variant ->
+            if (variant.name == "debug") {
+                createJacocoTestReport()
+            }
+        }
+    }
 }
 
 ext.excludes = [
@@ -13,7 +25,7 @@ ext.excludes = [
         '**/*Dagger*.*',
         '**/*Hilt*.*',
         '**/*MembersInjector*.*',
-        '**/*_MembersInjector.class',
+        '**/*_MembersInjector.class'
 ]
 
 def createJacocoTestReport() {
@@ -29,7 +41,7 @@ def createJacocoTestReport() {
         }
 
         def javaClasses = fileTree(dir: "${project.buildDir}/intermediates/javac/debug/classes", excludes: project.excludes)
-        def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: project.excludes)
+        def kotlinClasses = fileTree(dir: "${project.buildDir}/tmp/kotlin-classes/debug", excludes: project.excludes)
         getClassDirectories().setFrom(files([javaClasses, kotlinClasses]))
 
         getSourceDirectories().setFrom(file("$project.projectDir/src/main/java"))
